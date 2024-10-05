@@ -11,20 +11,51 @@ namespace Todolist.Infrastructure.Mappings
         {
             builder.ToTable("Projetos");
 
-            builder.HasKey(p => p.ProjetoId);
+            builder.HasKey(p => p.Id);
+
+            // Propriedades
+            builder.Property(p => p.Id)
+                .ValueGeneratedOnAdd(); 
 
             builder.Property(p => p.Nome)
-                .HasMaxLength(150)
-                .IsRequired();
+                .IsRequired()
+                .HasMaxLength(150); 
 
-            builder.OwnsOne(p => p.Cor);
-
-            builder.OwnsOne(p => p.Status);
-
+            // Relacionamento com Autor (Usuario)
             builder.HasOne(p => p.Autor)
                 .WithMany()
-                .HasForeignKey(p => p.Autor.UsuarioId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .HasForeignKey("AutorId")
+                .IsRequired()
+               .OnDelete(DeleteBehavior.Restrict);
+
+            // Relacionamento com Tarefas (um para muitos)
+            builder.HasMany(p => p.Tarefas)
+                .WithOne(t => t.Projeto)
+                .HasForeignKey("ProjetoId")
+                .IsRequired()
+            .OnDelete(DeleteBehavior.Restrict);
+
+            // Objeto de Valor (StatusProjeto)
+            builder.OwnsOne(p => p.Status, status =>
+            {
+                status.Property(s => s.Favorito)
+                      .HasColumnName("Favorito")
+                      .IsRequired();
+
+                status.Property(s => s.Ativo)
+                      .HasColumnName("Ativo")
+                      .IsRequired();
+            });
+
+            // Objeto de Valor (CorHexadecimal)
+            builder.OwnsOne(p => p.Cor, cor =>
+            {
+                cor.Property(c => c.Valor)
+                   .HasColumnName("CorHexadecimal")
+                   .IsRequired()
+                   .HasMaxLength(7);
+            });
+
         }
     }
 

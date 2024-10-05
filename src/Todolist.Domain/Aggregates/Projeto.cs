@@ -3,15 +3,28 @@ using Todolist.Domain.ValueObjects;
 
 namespace Todolist.Domain.Aggregates
 {
-    public class Projeto(string name, Usuario usuarioAutor, CorHexadecimal cor, bool marcadoComoFavorito = false, bool ativo = true) : IAggregateRoot
+    public class Projeto : IAggregateRoot
     {
-        public int ProjetoId { get; private set; }
-        public Usuario Autor { get; private set; } = usuarioAutor;
-        public string Nome { get; private set; } = name;
-        public StatusProjeto Status { get; private set; } = new StatusProjeto(marcadoComoFavorito, ativo);
-        public CorHexadecimal Cor { get; private set; } = cor;
+        protected Projeto()
+        {
 
-        private readonly List<Tarefa> _tarefas = new();
+        }
+
+        public Projeto(string nome, Usuario autor, CorHexadecimal cor, bool marcadoComoFavorito = false)
+        {
+            Nome = nome;
+            Autor = autor;
+            Cor = cor;
+            Status =  new StatusProjeto(marcadoComoFavorito, true);
+        }
+      
+        public int Id { get; private set; }
+        public Usuario? Autor { get; private set; } 
+        public string? Nome { get; private set; } 
+        public StatusProjeto? Status { get; private set; }
+        public CorHexadecimal? Cor { get; private set; }
+
+        private readonly List<Tarefa> _tarefas = [];
         public IReadOnlyCollection<Tarefa> Tarefas => _tarefas;
 
         public void AdicionarTarefa(Tarefa tarefa)

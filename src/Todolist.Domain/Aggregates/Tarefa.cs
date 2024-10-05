@@ -4,30 +4,45 @@ using Todolist.Domain.ValueObjects;
 
 namespace Todolist.Domain.Aggregates
 {
-    public class Tarefa(string nome, Projeto projeto, TipoPrioridade prioridade, Usuario autor, TemposDaTarefa temposdaTarefa, string? descricao = null) : IAggregateRoot
+    public class Tarefa : IAggregateRoot
     {
-        public int TarefaId { get; private set; }
-        public Projeto Projeto { get; private set; } = projeto;
-        public TipoPrioridade Prioridade { get; private set; } = prioridade;
-        public Usuario Autor { get; private set; } = autor;
+        public Tarefa() { }
+        
+        public Tarefa(string nome, Projeto projeto, TipoPrioridade prioridade, Usuario autor, TemposDaTarefa temposdaTarefa, string? descricao)
+        {
+            Nome = nome;
+            Projeto = projeto;
+            Prioridade = prioridade;
+            Autor = autor;
+            TemposdaTarefa = temposdaTarefa;
+            Descricao = descricao;
+        }
+
+        public int Id { get; private set; }
+        public int ProjetoId { get; private set; }
+        public Projeto? Projeto { get; private set; }
+        public int PrioridadeId { get; private set; }  
+        public TipoPrioridade? Prioridade { get; private set; } 
+        public Usuario? Autor { get; private set; }
         public Usuario? Responsavel { get; private set; }
-        public string Nome { get; private set; } = nome;
-        public string? Descricao { get; private set; } = descricao;
-        public TemposDaTarefa TemposdaTarefa { get; private set; } = temposdaTarefa;
+        public string? Nome { get; private set; } 
+        public string? Descricao { get; private set; } 
+        public TemposDaTarefa? TemposdaTarefa { get; private set; }
 
-        private readonly List<Comentario> _comentarios = new();
+        private readonly List<Comentario> _comentarios = [];
+        public IReadOnlyCollection<Comentario> Comentarios => _comentarios;
 
-        public IReadOnlyCollection<Comentario> Comments => _comentarios;
+        public void AdicionarComentario(string descricao, int usuarioId)
+        {
+            var comentario = new Comentario(Id, usuarioId, descricao);
+            _comentarios.Add(comentario);
+        }
 
         public void AdicionarResponsavel(Usuario usuarioResponsavel)
         {
             Responsavel = usuarioResponsavel;
         }
 
-        public void AdicionarComentario(string descricao, int usuarioId)
-        {
-            _comentarios.Add(new Comentario(TarefaId, usuarioId, descricao));
-        }
     }
 
 }

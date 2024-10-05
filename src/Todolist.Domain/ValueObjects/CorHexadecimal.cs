@@ -5,8 +5,9 @@ namespace Todolist.Domain.ValueObjects
 {
     public class CorHexadecimal
     {
-        public string Valor { get; private set; }
+        public string? Valor { get; private set; }
 
+        protected CorHexadecimal() { }
         public CorHexadecimal(string valor)
         {
             if (!ValidaCor(valor))

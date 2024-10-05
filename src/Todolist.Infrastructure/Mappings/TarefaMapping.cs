@@ -11,35 +11,51 @@ namespace Todolist.Infrastructure.Mappings
         {
             builder.ToTable("Tarefas");
 
-            builder.HasKey(t => t.TarefaId);
+            builder.HasKey(t => t.Id);
+
+            // Propriedades
+            builder.Property(t => t.Id)
+                .ValueGeneratedOnAdd();
 
             builder.Property(t => t.Nome)
-                .HasMaxLength(280)
-                .IsRequired();
+                .IsRequired()
+                .HasMaxLength(280);
 
             builder.Property(t => t.Descricao)
                 .HasMaxLength(1000);
 
-            builder.OwnsOne(t => t.TemposdaTarefa);
-
-            builder.HasOne(t => t.Projeto)
-                .WithMany(p => p.Tarefas)
-                .HasForeignKey(t => t.Projeto.ProjetoId);
-
+            // Relacionamento com TipoPrioridade (muitos para um)
             builder.HasOne(t => t.Prioridade)
                 .WithMany()
-                .HasForeignKey(t => t.Prioridade.PrioridadeId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .HasForeignKey("PrioridadeId")
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Restrict); 
 
+            // Relacionamento com Autor (muitos para um)
             builder.HasOne(t => t.Autor)
                 .WithMany()
-                .HasForeignKey(t => t.Autor.UsuarioId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .HasForeignKey("AutorId")
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Restrict); 
 
+            // Relacionamento com Responsavel (muitos para um, opcional)
             builder.HasOne(t => t.Responsavel)
                 .WithMany()
-                .HasForeignKey(t => t.Responsavel!.UsuarioId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .HasForeignKey("ResponsavelId")
+                .IsRequired(false)
+                .OnDelete(DeleteBehavior.Restrict); 
+
+            // Objeto de Valor (TemposDaTarefa)
+            builder.OwnsOne(t => t.TemposdaTarefa, tt =>
+            {
+                tt.Property(t => t.DataInicial)
+                    .HasColumnName("DataInicial")
+                    .IsRequired();
+
+                tt.Property(t => t.Prazo)
+                    .HasColumnName("Prazo")
+                    .IsRequired(false);
+            });
         }
     }
 

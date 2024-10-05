@@ -24,6 +24,8 @@ namespace Todolist.Infrastructure.Context
             modelBuilder.ApplyConfiguration(new ProjetoMapping());
             modelBuilder.ApplyConfiguration(new TarefaMapping());
             modelBuilder.ApplyConfiguration(new ComentarioMapping());
+            modelBuilder.ApplyConfiguration(new PrioridadeMapping());
+
         }
 
         public async Task<bool> Commit()

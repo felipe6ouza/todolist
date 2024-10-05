@@ -1,9 +1,16 @@
 ﻿namespace Todolist.Domain.ValueObjects
 {
-    public class TemposDaTarefa(DateTime dataInicial, DateTime? prazo)
+    public class TemposDaTarefa
     {
-        public DateTime DataInicial { get; private set; } = dataInicial;
-        public DateTime? Prazo { get; private set; } = prazo;
+        protected TemposDaTarefa() { }
+        public TemposDaTarefa (DateTime? dataInicial, DateTime? prazo)
+        {
+            DataInicial = dataInicial;
+            Prazo = prazo;
+        }
+
+        public DateTime? DataInicial { get; private set; } 
+        public DateTime? Prazo { get; private set; }
     }
 
 

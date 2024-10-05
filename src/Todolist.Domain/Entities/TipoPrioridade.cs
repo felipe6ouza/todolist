@@ -1,13 +1,16 @@
-﻿
-using Todolist.Domain.ValueObjects;
-
-namespace Todolist.Domain.Entities
+﻿namespace Todolist.Domain.Entities
 {
-    public class TipoPrioridade(string descricacao, CorHexadecimal cor)
+    public class TipoPrioridade
     {
-        public int PrioridadeId { get; private set; }
-        public string Descricao { get; private set; } = descricacao;
-        public CorHexadecimal Cor { get; private set; } = cor;
+        protected TipoPrioridade() { }
+
+        public TipoPrioridade(string descricacao)
+        {   
+            Descricao = descricacao;
+        }
+
+        public int? PrioridadeId { get; private set; }
+        public string? Descricao { get; private set; }
     }
 
 
