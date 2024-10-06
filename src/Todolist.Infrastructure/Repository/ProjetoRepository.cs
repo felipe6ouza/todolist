@@ -19,7 +19,7 @@ namespace Todolist.Infrastructure.Repository
 
         public IUnitOfWork UnitOfWork => Db;
 
-        public async Task<Projeto?> GetById(Guid id)
+        public async Task<Projeto?> GetById(int id)
         {
             return await DbSet.FindAsync(id);
         }
@@ -48,6 +48,11 @@ namespace Todolist.Infrastructure.Repository
         public void Dispose()
         {
             Db.Dispose();
+        }
+
+        public async Task<IEnumerable<Projeto>> BuscarProjetosUsuario(int id)
+        {
+            return await DbSet.Include(c => c.Tarefas).Include(c=> c.Autor).Where(c => c.Autor.Id == id).ToListAsync();
         }
     }
 }

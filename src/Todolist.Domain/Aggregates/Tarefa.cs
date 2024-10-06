@@ -8,16 +8,16 @@ namespace Todolist.Domain.Aggregates
     {
         public Tarefa() { }
         
-        public Tarefa(string nome, Projeto projeto, TipoPrioridade prioridade, Usuario autor, TemposDaTarefa temposdaTarefa, string? descricao)
+        public Tarefa(string nome, Projeto projeto, TipoPrioridade prioridade, Usuario autor, TimelineTarefa timelineTarefa, string? descricao)
         {
             Nome = nome;
             Projeto = projeto;
             Prioridade = prioridade;
             Autor = autor;
-            TemposdaTarefa = temposdaTarefa;
+            TimelineTarefa = timelineTarefa;
             Descricao = descricao;
+            StatusTarefa = (int)StatusTarefaEnum.Pendente;
         }
-
         public int Id { get; private set; }
         public int ProjetoId { get; private set; }
         public Projeto? Projeto { get; private set; }
@@ -27,7 +27,9 @@ namespace Todolist.Domain.Aggregates
         public Usuario? Responsavel { get; private set; }
         public string? Nome { get; private set; } 
         public string? Descricao { get; private set; } 
-        public TemposDaTarefa? TemposdaTarefa { get; private set; }
+        public TimelineTarefa? TimelineTarefa { get; private set; }
+        public int StatusTarefa { get; private set; }
+
 
         private readonly List<Comentario> _comentarios = [];
         public IReadOnlyCollection<Comentario> Comentarios => _comentarios;

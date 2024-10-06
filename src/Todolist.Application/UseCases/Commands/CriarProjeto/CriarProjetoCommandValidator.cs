@@ -1,0 +1,30 @@
+﻿using FluentValidation;
+
+namespace Todolist.Application.UseCases.Commands.CriarProjeto
+{
+    public class CriarProjetoCommandValidator : AbstractValidator<CriarProjetoCommand>
+    {
+        public CriarProjetoCommandValidator()
+        {
+            RuleFor(command => command.AutorId)
+            .GreaterThan(0)
+         .WithMessage("Campo {PropertyName} deve ser maior que 0. Valor atual: '{PropertyValue}'.");
+
+            RuleFor(command => command.Nome)
+                .NotEmpty()
+                .WithMessage("Campo {PropertyName} não pode estar vazio. Valor atual: '{PropertyValue}'.")
+                .MaximumLength(100)
+                .WithMessage("Campo {PropertyName} deve ter no máximo 100 caracteres. Valor atual: '{PropertyValue}'.");
+
+            RuleFor(command => command.CorHexadecimal)
+                .NotEmpty()
+                .WithMessage("Campo {PropertyName} não pode estar vazio. Valor atual: '{PropertyValue}'.")
+                .Matches(@"^#(?:[0-9a-fA-F]{3}){1,2}$")
+                .WithMessage("Campo {PropertyName} deve ser um código de cor hexadecimal válido. Valor atual: '{PropertyValue}'.");
+
+            RuleFor(command => command.Favorito)
+                .Must(x => x == true || x == false)
+                .WithMessage("Campo {PropertyName} deve ser verdadeiro ou falso. Valor atual: '{PropertyValue}'.");
+        }
+    }
+}

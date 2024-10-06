@@ -20,7 +20,7 @@ namespace Todolist.Infrastructure.Repository
 
         public IUnitOfWork UnitOfWork => Db;
 
-        public async Task<Tarefa?> GetById(Guid id)
+        public async Task<Tarefa?> GetById(int id)
         {
             return await DbSet.FindAsync(id);
         }
@@ -28,6 +28,13 @@ namespace Todolist.Infrastructure.Repository
         public async Task<IEnumerable<Tarefa>> GetAll()
         {
             return await DbSet.ToListAsync();
+        }
+
+        public async Task<IEnumerable<Tarefa>> ObterTarefasPorProjetoId(int projetoId)
+        {
+            return await DbSet
+                .Where(t => t.ProjetoId == projetoId)
+                .ToListAsync();
         }
 
         public void Add(Tarefa tarefa)

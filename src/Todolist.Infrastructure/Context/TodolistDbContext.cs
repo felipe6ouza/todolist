@@ -25,6 +25,8 @@ namespace Todolist.Infrastructure.Context
             modelBuilder.ApplyConfiguration(new TarefaMapping());
             modelBuilder.ApplyConfiguration(new ComentarioMapping());
             modelBuilder.ApplyConfiguration(new PrioridadeMapping());
+            modelBuilder.ApplyConfiguration(new StatusTarefaMapping());
+
 
         }
 

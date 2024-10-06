@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System.Reflection.Emit;
 using Todolist.Domain.Aggregates;
+using Todolist.Domain.Entities;
 
 
 namespace Todolist.Infrastructure.Mappings
@@ -46,16 +48,23 @@ namespace Todolist.Infrastructure.Mappings
                 .OnDelete(DeleteBehavior.Restrict); 
 
             // Objeto de Valor (TemposDaTarefa)
-            builder.OwnsOne(t => t.TemposdaTarefa, tt =>
+            builder.OwnsOne(t => t.TimelineTarefa, tt =>
             {
                 tt.Property(t => t.DataInicial)
                     .HasColumnName("DataInicial")
                     .IsRequired();
 
-                tt.Property(t => t.Prazo)
-                    .HasColumnName("Prazo")
+                tt.Property(t => t.DataFinal)
+                    .HasColumnName("DataFinal")
                     .IsRequired(false);
             });
+
+            // Referência para StatusTarefa
+            builder.HasOne<StatusTarefa>() 
+               .WithMany()
+               .HasForeignKey(t => t.StatusTarefa)
+               .IsRequired()
+               .OnDelete(DeleteBehavior.Restrict);
         }
     }
 

@@ -1,8 +1,16 @@
 
+using FluentValidation;
+using Microsoft.AspNetCore.Hosting;
 using System.Globalization;
+using Todolist.Application.Behaviors;
+using Todolist.Application.Mapping;
+using Todolist.Application.UseCases.Queries.ListarProjetosUsuario;
+using Todolist.Domain.Repositories;
 using Todolist.Domain.Shared;
 using Todolist.Infrastructure.Context;
+using Todolist.Infrastructure.Repository;
 using Todolist.WebAPI.Extensions;
+using Todolist.WebAPI.Middleware;
 
 namespace Todolist.WebAPI
 {
@@ -26,8 +34,22 @@ namespace Todolist.WebAPI
             builder.Services.AddDatabaseConfiguration(builder.Configuration);
 
 
-            builder.Services.AddScoped<IUnitOfWork, TodolistDbContext>();
+            //builder.Services.AddScoped<IUnitOfWork, TodolistDbContext>();
+            builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+            builder.Services.AddScoped<IProjetoRepository, ProjetoRepository>();
+            builder.Services.AddScoped<ITarefaRepository, TarefaRepository>();
 
+            builder.Services.AddValidatorsFromAssemblyContaining<ListarProjetosUsuarioQueryValidator>();
+
+            builder.Services.AddAutoMapper(typeof(ProjetoProfile));
+
+
+            builder.Services.AddMediatR(config =>
+            {
+                config.RegisterServicesFromAssemblyContaining<ListarProjetosUsuarioHandler>();
+                config.AddOpenBehavior(typeof(ValidationBehavior<,>));
+
+            });
 
             var app = builder.Build();
 
@@ -37,6 +59,9 @@ namespace Todolist.WebAPI
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+
+            app.UseMiddleware<ValidationExceptionMiddleware>();
+
 
             app.UseHttpsRedirection();
 

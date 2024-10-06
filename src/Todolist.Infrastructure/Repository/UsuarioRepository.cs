@@ -19,7 +19,7 @@ namespace Todolist.Infrastructure.Repository
 
         public IUnitOfWork UnitOfWork => Db;
 
-        public async Task<Usuario?> GetById(Guid id)
+        public async Task<Usuario?> GetById(int id)
         {
             return await DbSet.FindAsync(id);
         }
