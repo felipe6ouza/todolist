@@ -5,6 +5,7 @@ namespace Todolist.Domain.Aggregates
 {
     public class Projeto : IAggregateRoot
     {
+        const int NUMERO_MAXIMO_TAREFAS = 20;
         protected Projeto()
         {
 
@@ -27,12 +28,16 @@ namespace Todolist.Domain.Aggregates
         private readonly List<Tarefa> _tarefas = [];
         public IReadOnlyCollection<Tarefa> Tarefas => _tarefas;
 
-        public void AdicionarTarefa(Tarefa tarefa)
+        public Tarefa AdicionarTarefa(string nome, int prioridadeId, int autorId, DateTime? dataFinal, string descricao, int? responsavelId = null)
         {
-            if (_tarefas.Count == 20)
-               throw new DomainException("Um projeto só pode ter no máximo 20 tarefas");
+            if (Tarefas.Count >= NUMERO_MAXIMO_TAREFAS)
+                throw new DomainException("Numero máximo de Tarefas Excedido");
 
+            var tarefa = new Tarefa(nome, this.Id, prioridadeId, autorId, new TimelineTarefa(dataFinal), descricao, responsavelId);
+            
             _tarefas.Add(tarefa);
+
+            return tarefa;
         }
 
         public void AtualizarStatus(bool marcadoComoFavorito, bool ativo)

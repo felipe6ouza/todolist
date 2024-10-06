@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Todolist.Application.UseCases.Commands.CriarProjeto;
+using Todolist.Application.UseCases.Commands.AtualizarTarefa;
+using Todolist.Application.UseCases.Commands.CriarTarefa;
 
 namespace Todolist.WebAPI.Controllers
 {
@@ -13,22 +14,30 @@ namespace Todolist.WebAPI.Controllers
         {
             _mediator = mediator;
         }
-        //[HttpPost]
-        //public async Task<IActionResult> CriarTarefa([FromBody] CriarProjetoCommand command)
-        //{
-            
-        //    var result = await _mediator.Send(command); 
+        
+        [HttpPost]
+        public async Task<IActionResult> AdicionarTarefa([FromBody] CriarTarefaCommand command)
+        {
 
-        //    if (result.IsFailed) 
-        //        return BadRequest(result.Errors.Select(e => e.Message)); 
+            var result = await _mediator.Send(command);
 
-
-        //    return CreatedAtAction(nameof(CriarProjeto), new { id = result.Value});
-        //}
+            if (result.IsFailed)
+                return BadRequest(result.Errors.Select(e => e.Message));
 
 
+            return CreatedAtAction(nameof(AdicionarTarefa), new { id = result.Value });
+        }
 
 
+        [HttpPut]
+        public async Task<IActionResult> AtualizarTarefa([FromBody] AtualizarTarefaCommand command)
+        {
+            var result = await _mediator.Send(command);
 
+            if (result.IsFailed)
+                return BadRequest(result.Errors);
+
+            return NoContent(); 
+        }
     }
 }

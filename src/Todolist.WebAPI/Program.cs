@@ -1,5 +1,6 @@
 
 using FluentValidation;
+using MediatR;
 using Microsoft.AspNetCore.Hosting;
 using System.Globalization;
 using Todolist.Application.Behaviors;
@@ -48,8 +49,11 @@ namespace Todolist.WebAPI
             {
                 config.RegisterServicesFromAssemblyContaining<ListarProjetosUsuarioHandler>();
                 config.AddOpenBehavior(typeof(ValidationBehavior<,>));
-
             });
+
+            builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(DomainExceptionBehavior<,>));
+
+
 
             var app = builder.Build();
 

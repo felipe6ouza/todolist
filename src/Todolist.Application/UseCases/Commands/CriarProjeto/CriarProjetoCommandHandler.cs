@@ -6,17 +6,11 @@ using Todolist.Domain.ValueObjects;
 
 namespace Todolist.Application.UseCases.Commands.CriarProjeto
 {
-    public class CriarProjetoCommandHandler : IRequestHandler<CriarProjetoCommand, Result<int>>
+    public class CriarProjetoCommandHandler(IProjetoRepository projetoRepository, IUsuarioRepository autorRepository) : IRequestHandler<CriarProjetoCommand, Result<int>>
     {
-        private readonly IProjetoRepository _projetoRepository;
+        private readonly IProjetoRepository _projetoRepository = projetoRepository;
 
-        private readonly IUsuarioRepository _usuarioRepository;
-
-        public CriarProjetoCommandHandler(IProjetoRepository projetoRepository, IUsuarioRepository autorRepository)
-        {
-            _projetoRepository = projetoRepository;
-            _usuarioRepository = autorRepository;
-        }
+        private readonly IUsuarioRepository _usuarioRepository = autorRepository;
 
         public async Task<Result<int>> Handle(CriarProjetoCommand request, CancellationToken cancellationToken)
 

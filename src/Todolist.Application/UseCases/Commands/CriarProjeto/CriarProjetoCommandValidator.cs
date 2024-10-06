@@ -13,8 +13,8 @@ namespace Todolist.Application.UseCases.Commands.CriarProjeto
             RuleFor(command => command.Nome)
                 .NotEmpty()
                 .WithMessage("Campo {PropertyName} não pode estar vazio. Valor atual: '{PropertyValue}'.")
-                .MaximumLength(100)
-                .WithMessage("Campo {PropertyName} deve ter no máximo 100 caracteres. Valor atual: '{PropertyValue}'.");
+                .MaximumLength(150)
+                .WithMessage("Campo {PropertyName} deve ter no máximo 150 caracteres. Valor atual: '{PropertyValue}'.");
 
             RuleFor(command => command.CorHexadecimal)
                 .NotEmpty()

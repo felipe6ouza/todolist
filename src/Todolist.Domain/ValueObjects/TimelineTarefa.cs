@@ -3,14 +3,19 @@
     public class TimelineTarefa
     {
         protected TimelineTarefa() { }
-        public TimelineTarefa (DateTime? dataInicial, DateTime? dataFinal)
+        public TimelineTarefa (DateTime? dataFinal)
         {
-            DataInicial = dataInicial;
+            DataInicial = DateTime.Now;
             DataFinal = dataFinal;
         }
 
         public DateTime? DataInicial { get; private set; } 
         public DateTime? DataFinal { get; private set; }
+
+        public void AtualizarDataFinal (DateTime dataFinal)
+        {
+            DataFinal = dataFinal;
+        }
     }
 
 

@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Todolist.Domain.Entities;
-using Todolist.Domain.ValueObjects;
+using Todolist.Domain.Enum;
 
 namespace Todolist.Infrastructure.Mappings
 {

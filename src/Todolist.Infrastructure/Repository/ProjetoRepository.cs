@@ -21,7 +21,10 @@ namespace Todolist.Infrastructure.Repository
 
         public async Task<Projeto?> GetById(int id)
         {
-            return await DbSet.FindAsync(id);
+            return await DbSet
+                .Include(c => c.Tarefas)
+                .Include(c => c.Autor)  
+                .FirstOrDefaultAsync(c => c.Id == id); 
         }
 
         public async Task<IEnumerable<Projeto>> GetAll()

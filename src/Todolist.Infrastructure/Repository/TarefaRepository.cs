@@ -22,7 +22,11 @@ namespace Todolist.Infrastructure.Repository
 
         public async Task<Tarefa?> GetById(int id)
         {
-            return await DbSet.FindAsync(id);
+            return await DbSet.Include(c => c.Autor)
+                .Include(c => c.Responsavel)
+                .Include(c => c.Comentarios)
+                .Include(c=> c.Prioridade)
+                .Include(c => c.Projeto).FirstOrDefaultAsync(c => c.Id == id);
         }
 
         public async Task<IEnumerable<Tarefa>> GetAll()

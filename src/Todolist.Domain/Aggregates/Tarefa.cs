@@ -1,4 +1,6 @@
-﻿using Todolist.Domain.Entities;
+﻿using System.Net.NetworkInformation;
+using Todolist.Domain.Entities;
+using Todolist.Domain.Enum;
 using Todolist.Domain.Shared;
 using Todolist.Domain.ValueObjects;
 
@@ -8,31 +10,35 @@ namespace Todolist.Domain.Aggregates
     {
         public Tarefa() { }
         
-        public Tarefa(string nome, Projeto projeto, TipoPrioridade prioridade, Usuario autor, TimelineTarefa timelineTarefa, string? descricao)
+        public Tarefa(string nome, int projetoId, int prioridadeId, int autorId, TimelineTarefa timelineTarefa, string? descricao, int? responsavelId = null)
         {
             Nome = nome;
-            Projeto = projeto;
-            Prioridade = prioridade;
-            Autor = autor;
+            ProjetoId = projetoId;
+            PrioridadeId = prioridadeId;
+            AutorId = autorId;
             TimelineTarefa = timelineTarefa;
             Descricao = descricao;
             StatusTarefa = (int)StatusTarefaEnum.Pendente;
+            ResponsavelId = responsavelId;
         }
         public int Id { get; private set; }
         public int ProjetoId { get; private set; }
         public Projeto? Projeto { get; private set; }
         public int PrioridadeId { get; private set; }  
-        public TipoPrioridade? Prioridade { get; private set; } 
+        public TipoPrioridade? Prioridade { get; private set; }
+        public int? AutorId { get; private set; }
         public Usuario? Autor { get; private set; }
+        public int? ResponsavelId { get; private set; }
         public Usuario? Responsavel { get; private set; }
         public string? Nome { get; private set; } 
         public string? Descricao { get; private set; } 
-        public TimelineTarefa? TimelineTarefa { get; private set; }
+        public TimelineTarefa TimelineTarefa { get; private set; }
         public int StatusTarefa { get; private set; }
 
 
         private readonly List<Comentario> _comentarios = [];
         public IReadOnlyCollection<Comentario> Comentarios => _comentarios;
+
 
         public void AdicionarComentario(string descricao, int usuarioId)
         {
@@ -40,9 +46,50 @@ namespace Todolist.Domain.Aggregates
             _comentarios.Add(comentario);
         }
 
-        public void AdicionarResponsavel(Usuario usuarioResponsavel)
+        public void AtualizarPrioridade(int prioridadeId)
         {
-            Responsavel = usuarioResponsavel;
+            PrioridadeId = prioridadeId;
+        }
+
+        public void AtualizarNome(string? nome)
+        {
+            if (!string.IsNullOrEmpty(nome))
+            {
+                Nome = nome;
+            }
+        }
+      
+
+        public void AtualizarDescricao(string? descricao)
+        {
+            if (!string.IsNullOrEmpty(descricao))
+            {
+                Descricao = descricao;
+            }
+        }
+
+        public void AtualizarDataFinal(DateTime? dataFinal)
+        {
+            if (dataFinal.HasValue)
+            {
+                TimelineTarefa.AtualizarDataFinal((DateTime)dataFinal);
+            }
+        }
+
+        public void AtualizarResponsavel(int? responsavelId)
+        {
+            if (responsavelId.HasValue)
+            {
+                ResponsavelId = responsavelId;
+            }
+        }
+
+        public void AtualizarStatus(int? status)
+        {
+            if (status.HasValue)
+            {
+                StatusTarefa = (int)status;
+            }
         }
 
     }

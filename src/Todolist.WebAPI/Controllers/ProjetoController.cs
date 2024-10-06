@@ -30,7 +30,7 @@ namespace Todolist.WebAPI.Controllers
                 return BadRequest(result.Errors.Select(e => e.Message));
 
             if(!result.Value.Any())
-                return NotFound(new { mensagem = "Nenhuma tarefa encontrada para este projeto." });
+                return NotFound("Nenhuma tarefa encontrada para este projeto.");
 
             return Ok(result.Value);
         }
