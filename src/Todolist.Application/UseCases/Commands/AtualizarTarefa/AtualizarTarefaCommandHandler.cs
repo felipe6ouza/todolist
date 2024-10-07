@@ -4,14 +4,9 @@ using Todolist.Domain.Repositories;
 
 namespace Todolist.Application.UseCases.Commands.AtualizarTarefa
 {
-    public class AtualizarTarefaCommandHandler : IRequestHandler<AtualizarTarefaCommand, Result>
+    public class AtualizarTarefaCommandHandler(ITarefaRepository tarefaRepository) : IRequestHandler<AtualizarTarefaCommand, Result>
     {
-        private readonly ITarefaRepository _tarefaRepository;
-
-        public AtualizarTarefaCommandHandler(ITarefaRepository tarefaRepository)
-        {
-            _tarefaRepository = tarefaRepository;
-        }
+        private readonly ITarefaRepository _tarefaRepository = tarefaRepository;
 
         public async Task<Result> Handle(AtualizarTarefaCommand request, CancellationToken cancellationToken)
         {

@@ -25,7 +25,6 @@ namespace Todolist.Infrastructure.Repository
             return await DbSet.Include(c => c.Autor)
                 .Include(c => c.Responsavel)
                 .Include(c => c.Comentarios)
-                .Include(c=> c.Prioridade)
                 .Include(c => c.Projeto).FirstOrDefaultAsync(c => c.Id == id);
         }
 

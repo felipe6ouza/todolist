@@ -2,19 +2,29 @@
 using Microsoft.AspNetCore.Mvc;
 using Todolist.Application.UseCases.Commands.AtualizarTarefa;
 using Todolist.Application.UseCases.Commands.CriarTarefa;
+using Todolist.Application.UseCases.Commands.DeletarTarefa;
+using Todolist.Application.UseCases.Queries.ObterDetalhesTarefa;
 
 namespace Todolist.WebAPI.Controllers
 {
     [Route("api/[controller]")]
-    public class TarefaController : Controller
+    public class TarefaController(IMediator mediator) : Controller
     {
-        public readonly IMediator _mediator;
+        public readonly IMediator _mediator = mediator;
 
-        public TarefaController(IMediator mediator)
+
+        [HttpGet("{tarefaId}")]
+        public async Task<IActionResult> ObterDetalhesTarefa(int tarefaId)
         {
-            _mediator = mediator;
+            var result = await _mediator.Send(new ObterDetalhesTarefaQuery { TarefaId = tarefaId });
+
+            if (result.IsFailed)
+                return BadRequest(result.Errors.Select(e => e.Message));
+
+            return Ok(result.Value);
         }
-        
+
+
         [HttpPost]
         public async Task<IActionResult> AdicionarTarefa([FromBody] CriarTarefaCommand command)
         {
@@ -23,7 +33,6 @@ namespace Todolist.WebAPI.Controllers
 
             if (result.IsFailed)
                 return BadRequest(result.Errors.Select(e => e.Message));
-
 
             return CreatedAtAction(nameof(AdicionarTarefa), new { id = result.Value });
         }
@@ -35,9 +44,21 @@ namespace Todolist.WebAPI.Controllers
             var result = await _mediator.Send(command);
 
             if (result.IsFailed)
-                return BadRequest(result.Errors);
+                return BadRequest(result.Errors.Select(e => e.Message));
 
-            return NoContent(); 
+            return NoContent();
+        }
+
+
+        [HttpDelete("{tarefaId}")]
+        public async Task<IActionResult> RemoverTarefa(int tarefaId)
+        {
+            var result = await _mediator.Send(new DeletarTarefaCommand { TarefaId = tarefaId });
+
+            if (result.IsFailed)
+                return BadRequest(result.Errors.Select(e => e.Message));
+
+            return NoContent();
         }
     }
 }

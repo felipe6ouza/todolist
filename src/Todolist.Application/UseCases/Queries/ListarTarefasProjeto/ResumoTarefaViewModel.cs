@@ -1,6 +1,6 @@
 ﻿namespace Todolist.Application.UseCases.Queries.ListarTarefasProjeto
 {
-    public class TarefaViewModel
+    public class ResumoTarefaViewModel
     {
         public int Id { get; set; }
         public string Nome { get; set; }
