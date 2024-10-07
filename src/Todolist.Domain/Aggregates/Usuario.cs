@@ -1,4 +1,6 @@
-﻿using Todolist.Domain.Shared;
+﻿using System.Reflection.Emit;
+using Todolist.Domain.Entities;
+using Todolist.Domain.Shared;
 
 namespace Todolist.Domain.Aggregates
 {
@@ -17,6 +19,9 @@ namespace Todolist.Domain.Aggregates
         public string? Nome { get; private set; }
         public string? Sobrenome { get; private set; } 
         public DateTime? DataNascimento { get; private set; }
+        public int? FuncaoUsuarioId { get; set; }
+        public FuncaoUsuario? FuncaoUsuario { get; set; }
+
 
         public void AtualizarNomeUsuario(string nome, string sobrenome)
         {

@@ -29,16 +29,15 @@ namespace Todolist.WebAPI
 
 
             builder.Services.AddControllers();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             builder.Services.AddDatabaseConfiguration(builder.Configuration);
 
-
-            //builder.Services.AddScoped<IUnitOfWork, TodolistDbContext>();
             builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
             builder.Services.AddScoped<IProjetoRepository, ProjetoRepository>();
             builder.Services.AddScoped<ITarefaRepository, TarefaRepository>();
+            builder.Services.AddScoped<IRelatorioDesempenhoRepository, RelatorioDesempenhoRepository>();
+
 
             builder.Services.AddValidatorsFromAssemblyContaining<ListarProjetosUsuarioQueryValidator>();
 

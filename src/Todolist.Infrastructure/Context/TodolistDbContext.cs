@@ -2,6 +2,7 @@
 using Todolist.Domain.Aggregates;
 using Todolist.Domain.Entities;
 using Todolist.Domain.Shared;
+using Todolist.Domain.View;
 using Todolist.Infrastructure.Mappings;
 using Tarefa = Todolist.Domain.Aggregates.Tarefa;
 
@@ -15,6 +16,8 @@ namespace Todolist.Infrastructure.Context
         public DbSet<Tarefa> Tarefas { get; set; }
         public DbSet<Comentario> Comentarios { get; set; }
         public DbSet<TipoPrioridade> TiposPrioridade { get; set; }
+        public DbSet<RelatorioTarefasConcluidasView> RelatorioTarefasConcluidas { get; set; }
+
 
         // Configuração das entidades usando Fluent API
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -26,8 +29,12 @@ namespace Todolist.Infrastructure.Context
             modelBuilder.ApplyConfiguration(new ComentarioMapping());
             modelBuilder.ApplyConfiguration(new PrioridadeMapping());
             modelBuilder.ApplyConfiguration(new StatusTarefaMapping());
+            modelBuilder.ApplyConfiguration(new FuncaoUsuarioMapping());
 
 
+            modelBuilder.Entity<RelatorioTarefasConcluidasView>()
+               .HasNoKey() 
+               .ToView("vwRelatorioDesempenho");
         }
 
         public async Task<bool> Commit()

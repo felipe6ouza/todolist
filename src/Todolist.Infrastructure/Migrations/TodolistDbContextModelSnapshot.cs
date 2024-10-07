@@ -53,7 +53,8 @@ namespace Todolist.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("AutorId")
+                    b.Property<int?>("AutorId")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<string>("Descricao")
@@ -74,6 +75,9 @@ namespace Todolist.Infrastructure.Migrations
                     b.Property<int?>("ResponsavelId")
                         .HasColumnType("int");
 
+                    b.Property<int>("StatusTarefa")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("AutorId");
@@ -83,6 +87,8 @@ namespace Todolist.Infrastructure.Migrations
                     b.HasIndex("ProjetoId");
 
                     b.HasIndex("ResponsavelId");
+
+                    b.HasIndex("StatusTarefa");
 
                     b.ToTable("Tarefas", (string)null);
                 });
@@ -99,6 +105,9 @@ namespace Todolist.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("datetime");
 
+                    b.Property<int?>("FuncaoUsuarioId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Nome")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -110,6 +119,8 @@ namespace Todolist.Infrastructure.Migrations
                         .HasColumnType("nvarchar(150)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("FuncaoUsuarioId");
 
                     b.ToTable("Usuarios", (string)null);
                 });
@@ -142,6 +153,74 @@ namespace Todolist.Infrastructure.Migrations
                     b.ToTable("Comentarios", (string)null);
                 });
 
+            modelBuilder.Entity("Todolist.Domain.Entities.FuncaoUsuario", b =>
+                {
+                    b.Property<int?>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("Id"));
+
+                    b.Property<string>("Descricao")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("FuncaoUsuario", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 0,
+                            Descricao = "Usuario"
+                        },
+                        new
+                        {
+                            Id = 1,
+                            Descricao = "Gerente"
+                        });
+                });
+
+            modelBuilder.Entity("Todolist.Domain.Entities.StatusTarefa", b =>
+                {
+                    b.Property<int?>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("Id"));
+
+                    b.Property<string>("Descricao")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("StatusTarefa", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 0,
+                            Descricao = "Pendente"
+                        },
+                        new
+                        {
+                            Id = 1,
+                            Descricao = "Concluida"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Descricao = "Cancelada"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Descricao = "Arquivada"
+                        });
+                });
+
             modelBuilder.Entity("Todolist.Domain.Entities.TipoPrioridade", b =>
                 {
                     b.Property<int?>("PrioridadeId")
@@ -158,6 +237,26 @@ namespace Todolist.Infrastructure.Migrations
                     b.HasKey("PrioridadeId");
 
                     b.ToTable("TiposPrioridade", (string)null);
+                });
+
+            modelBuilder.Entity("Todolist.Domain.View.RelatorioTarefasConcluidasView", b =>
+                {
+                    b.Property<int>("MediaDiasConclusao")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ResponsavelId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ResponsavelNome")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("TotalTarefasConcluidas")
+                        .HasColumnType("int");
+
+                    b.ToTable((string)null);
+
+                    b.ToView("vwRelatorioDesempenho", (string)null);
                 });
 
             modelBuilder.Entity("Todolist.Domain.Aggregates.Projeto", b =>
@@ -240,19 +339,25 @@ namespace Todolist.Infrastructure.Migrations
                         .HasForeignKey("ResponsavelId")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.OwnsOne("Todolist.Domain.ValueObjects.TemposDaTarefa", "TemposdaTarefa", b1 =>
+                    b.HasOne("Todolist.Domain.Entities.StatusTarefa", null)
+                        .WithMany()
+                        .HasForeignKey("StatusTarefa")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.OwnsOne("Todolist.Domain.ValueObjects.TimelineTarefa", "TimelineTarefa", b1 =>
                         {
                             b1.Property<int>("TarefaId")
                                 .HasColumnType("int");
+
+                            b1.Property<DateTime?>("DataFinal")
+                                .HasColumnType("datetime2")
+                                .HasColumnName("DataFinal");
 
                             b1.Property<DateTime?>("DataInicial")
                                 .IsRequired()
                                 .HasColumnType("datetime2")
                                 .HasColumnName("DataInicial");
-
-                            b1.Property<DateTime?>("Prazo")
-                                .HasColumnType("datetime2")
-                                .HasColumnName("Prazo");
 
                             b1.HasKey("TarefaId");
 
@@ -270,7 +375,18 @@ namespace Todolist.Infrastructure.Migrations
 
                     b.Navigation("Responsavel");
 
-                    b.Navigation("TemposdaTarefa");
+                    b.Navigation("TimelineTarefa")
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Todolist.Domain.Aggregates.Usuario", b =>
+                {
+                    b.HasOne("Todolist.Domain.Entities.FuncaoUsuario", "FuncaoUsuario")
+                        .WithMany("Usuarios")
+                        .HasForeignKey("FuncaoUsuarioId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("FuncaoUsuario");
                 });
 
             modelBuilder.Entity("Todolist.Domain.Entities.Comentario", b =>
@@ -278,7 +394,7 @@ namespace Todolist.Infrastructure.Migrations
                     b.HasOne("Todolist.Domain.Aggregates.Usuario", "Autor")
                         .WithMany()
                         .HasForeignKey("AutorId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Todolist.Domain.Aggregates.Tarefa", "Tarefa")
@@ -300,6 +416,11 @@ namespace Todolist.Infrastructure.Migrations
             modelBuilder.Entity("Todolist.Domain.Aggregates.Tarefa", b =>
                 {
                     b.Navigation("Comentarios");
+                });
+
+            modelBuilder.Entity("Todolist.Domain.Entities.FuncaoUsuario", b =>
+                {
+                    b.Navigation("Usuarios");
                 });
 #pragma warning restore 612, 618
         }

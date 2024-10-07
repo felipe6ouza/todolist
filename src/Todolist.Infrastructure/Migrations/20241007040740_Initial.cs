@@ -3,14 +3,42 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace Todolist.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "FuncaoUsuario",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Descricao = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FuncaoUsuario", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "StatusTarefa",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Descricao = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_StatusTarefa", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "TiposPrioridade",
                 columns: table => new
@@ -32,11 +60,18 @@ namespace Todolist.Infrastructure.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Nome = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Sobrenome = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
-                    DataNascimento = table.Column<DateTime>(type: "datetime", nullable: false)
+                    DataNascimento = table.Column<DateTime>(type: "datetime", nullable: false),
+                    FuncaoUsuarioId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Usuarios", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Usuarios_FuncaoUsuario_FuncaoUsuarioId",
+                        column: x => x.FuncaoUsuarioId,
+                        principalTable: "FuncaoUsuario",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -74,8 +109,9 @@ namespace Todolist.Infrastructure.Migrations
                     ResponsavelId = table.Column<int>(type: "int", nullable: true),
                     Nome = table.Column<string>(type: "nvarchar(280)", maxLength: 280, nullable: false),
                     Descricao = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true),
-                    DataInicial = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    Prazo = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    DataInicial = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DataFinal = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    StatusTarefa = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -84,6 +120,12 @@ namespace Todolist.Infrastructure.Migrations
                         name: "FK_Tarefas_Projetos_ProjetoId",
                         column: x => x.ProjetoId,
                         principalTable: "Projetos",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Tarefas_StatusTarefa_StatusTarefa",
+                        column: x => x.StatusTarefa,
+                        principalTable: "StatusTarefa",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
@@ -130,7 +172,27 @@ namespace Todolist.Infrastructure.Migrations
                         column: x => x.AutorId,
                         principalTable: "Usuarios",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "FuncaoUsuario",
+                columns: new[] { "Id", "Descricao" },
+                values: new object[,]
+                {
+                    { 0, "Usuario" },
+                    { 1, "Gerente" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "StatusTarefa",
+                columns: new[] { "Id", "Descricao" },
+                values: new object[,]
+                {
+                    { 0, "Pendente" },
+                    { 1, "Concluida" },
+                    { 2, "Cancelada" },
+                    { 3, "Arquivada" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -167,6 +229,16 @@ namespace Todolist.Infrastructure.Migrations
                 name: "IX_Tarefas_ResponsavelId",
                 table: "Tarefas",
                 column: "ResponsavelId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Tarefas_StatusTarefa",
+                table: "Tarefas",
+                column: "StatusTarefa");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Usuarios_FuncaoUsuarioId",
+                table: "Usuarios",
+                column: "FuncaoUsuarioId");
         }
 
         /// <inheritdoc />
@@ -182,10 +254,16 @@ namespace Todolist.Infrastructure.Migrations
                 name: "Projetos");
 
             migrationBuilder.DropTable(
+                name: "StatusTarefa");
+
+            migrationBuilder.DropTable(
                 name: "TiposPrioridade");
 
             migrationBuilder.DropTable(
                 name: "Usuarios");
+
+            migrationBuilder.DropTable(
+                name: "FuncaoUsuario");
         }
     }
 }

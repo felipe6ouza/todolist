@@ -23,7 +23,6 @@
     <Folder Include="UseCases\Commands\DeletarProjeto\" />
     <Folder Include="UseCases\Commands\AdicionarComentarioTarefa\" />
     <Folder Include="UseCases\Commands\DeletarComentarioTarefa\" />
-    <Folder Include="UseCases\Queries\ObterRelatorioDesempenho\" />
   </ItemGroup>
 
 </Project>

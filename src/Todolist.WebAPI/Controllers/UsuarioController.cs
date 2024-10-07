@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Todolist.Application.UseCases.Queries.ListarProjetosUsuario;
+using Todolist.Application.UseCases.Queries.ObterRelatorioDesempenho;
 
 namespace Todolist.WebAPI.Controllers
 {
@@ -26,6 +27,18 @@ namespace Todolist.WebAPI.Controllers
             return Ok(projetos);
         }
 
+
+        [HttpGet("{usuarioId}/desempenho")]
+        public async Task<IActionResult> ObterRelatorioDesempenho(int usuarioId)
+        {
+            var relatorioDesempenho = await _mediator.Send(new ObterRelatorioDesempenhoQuery { UsuarioId = usuarioId });
+
+            if (relatorioDesempenho.Value == null || !relatorioDesempenho.Value.Any())
+            {
+                return NotFound("Nenhum relatorio encontrado");
+            }
+            return Ok(relatorioDesempenho.Value);
+        }
 
 
     }
