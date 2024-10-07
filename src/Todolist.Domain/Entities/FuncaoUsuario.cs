@@ -8,8 +8,8 @@ namespace Todolist.Domain.Entities
         {
            
         }
-        public int? Id { get; set; }
-        public string? Descricao { get; set; }
+        public int Id { get; set; }
+        public string Descricao { get; set; }
 
         public ICollection<Usuario> Usuarios { get; set; } // Relação inversa
 

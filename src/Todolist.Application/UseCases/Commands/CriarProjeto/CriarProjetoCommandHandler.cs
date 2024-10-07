@@ -15,7 +15,7 @@ namespace Todolist.Application.UseCases.Commands.CriarProjeto
         public async Task<Result<int>> Handle(CriarProjetoCommand request, CancellationToken cancellationToken)
 
         {
-            var autor = await _usuarioRepository.GetById(request.AutorId);
+            var autor = await _usuarioRepository.ObterPorId(request.AutorId);
 
 
             if (autor == null)
@@ -23,9 +23,7 @@ namespace Todolist.Application.UseCases.Commands.CriarProjeto
                 return Result.Fail<int>("Autor não é válido.");
             }
 
-            var cor = new CorHexadecimal(request.CorHexadecimal);
-
-            var projeto = new Projeto(request.Nome, autor, cor, request.Favorito);
+            var projeto = new Projeto(request.Nome, autor, request.Favorito);
           
             _projetoRepository.Add(projeto); 
 

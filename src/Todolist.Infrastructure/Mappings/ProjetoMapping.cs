@@ -46,16 +46,6 @@ namespace Todolist.Infrastructure.Mappings
                       .HasColumnName("Ativo")
                       .IsRequired();
             });
-
-            // Objeto de Valor (CorHexadecimal)
-            builder.OwnsOne(p => p.Cor, cor =>
-            {
-                cor.Property(c => c.Valor)
-                   .HasColumnName("CorHexadecimal")
-                   .IsRequired()
-                   .HasMaxLength(7);
-            });
-
         }
     }
 

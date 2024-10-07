@@ -6,14 +6,9 @@ using Todolist.Application.UseCases.Queries.ObterRelatorioDesempenho;
 namespace Todolist.WebAPI.Controllers
 {
     [Route("api/[controller]")]
-    public class UsuarioController : Controller
+    public class UsuarioController(IMediator mediator) : Controller
     {
-        public readonly IMediator _mediator;
-
-        public UsuarioController(IMediator mediator)
-        {
-            _mediator = mediator;
-        }
+        public readonly IMediator _mediator = mediator;
 
         [HttpGet("{usuarioId}/projetos")]
         public async Task<IActionResult> ListarProjetosUsuario(int usuarioId)
@@ -28,18 +23,18 @@ namespace Todolist.WebAPI.Controllers
         }
 
 
-        [HttpGet("{usuarioId}/desempenho")]
+        [HttpGet("{usuarioId}/relatorio-desempenho")]
         public async Task<IActionResult> ObterRelatorioDesempenho(int usuarioId)
         {
             var relatorioDesempenho = await _mediator.Send(new ObterRelatorioDesempenhoQuery { UsuarioId = usuarioId });
 
+            if(relatorioDesempenho.IsFailed)
+                return Forbid();
+
             if (relatorioDesempenho.Value == null || !relatorioDesempenho.Value.Any())
-            {
-                return NotFound("Nenhum relatorio encontrado");
-            }
+                return NotFound("Nenhum relatório disponível");
+
             return Ok(relatorioDesempenho.Value);
         }
-
-
     }
 }

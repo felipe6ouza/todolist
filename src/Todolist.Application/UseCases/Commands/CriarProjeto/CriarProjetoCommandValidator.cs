@@ -16,12 +16,6 @@ namespace Todolist.Application.UseCases.Commands.CriarProjeto
                 .MaximumLength(150)
                 .WithMessage("Campo {PropertyName} deve ter no máximo 150 caracteres. Valor atual: '{PropertyValue}'.");
 
-            RuleFor(command => command.CorHexadecimal)
-                .NotEmpty()
-                .WithMessage("Campo {PropertyName} não pode estar vazio. Valor atual: '{PropertyValue}'.")
-                .Matches(@"^#(?:[0-9a-fA-F]{3}){1,2}$")
-                .WithMessage("Campo {PropertyName} deve ser um código de cor hexadecimal válido. Valor atual: '{PropertyValue}'.");
-
             RuleFor(command => command.Favorito)
                 .Must(x => x == true || x == false)
                 .WithMessage("Campo {PropertyName} deve ser verdadeiro ou falso. Valor atual: '{PropertyValue}'.");

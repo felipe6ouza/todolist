@@ -1,5 +1,4 @@
-﻿using System.Net.NetworkInformation;
-using Todolist.Domain.Entities;
+﻿using Todolist.Domain.Entities;
 using Todolist.Domain.Enum;
 using Todolist.Domain.Shared;
 using Todolist.Domain.ValueObjects;

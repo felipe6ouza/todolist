@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Todolist.Domain.Aggregates;
+using Todolist.Domain.Entities;
 using Todolist.Domain.Repositories;
 using Todolist.Domain.Shared;
 using Todolist.Infrastructure.Context;
@@ -19,9 +20,10 @@ namespace Todolist.Infrastructure.Repository
 
         public IUnitOfWork UnitOfWork => Db;
 
-        public async Task<Usuario?> GetById(int id)
+       
+        public async Task<Usuario?> ObterPorId(int id)
         {
-            return await DbSet.FindAsync(id);
+             return await DbSet.Include(c => c.FuncaoUsuario).FirstOrDefaultAsync(c => c.Id == id);
         }
 
         public async Task<IEnumerable<Usuario>> GetAll()

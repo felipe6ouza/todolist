@@ -11,11 +11,10 @@ namespace Todolist.Domain.Aggregates
 
         }
 
-        public Projeto(string nome, Usuario autor, CorHexadecimal cor, bool marcadoComoFavorito = false)
+        public Projeto(string nome, Usuario autor, bool marcadoComoFavorito = false)
         {
             Nome = nome;
             Autor = autor;
-            Cor = cor;
             Status =  new StatusProjeto(marcadoComoFavorito, true);
         }
       
@@ -23,7 +22,6 @@ namespace Todolist.Domain.Aggregates
         public Usuario? Autor { get; private set; } 
         public string? Nome { get; private set; } 
         public StatusProjeto? Status { get; private set; }
-        public CorHexadecimal? Cor { get; private set; }
 
         private readonly List<Tarefa> _tarefas = [];
         public IReadOnlyCollection<Tarefa> Tarefas => _tarefas;

@@ -10,8 +10,7 @@ namespace Todolist.Application.Mapping
         {
             CreateMap<Projeto, ProjetoViewModel>()
                 .ForMember(dest => dest.Favorito, opt => opt.MapFrom(src => src.Status.Favorito))
-                .ForMember(dest => dest.Ativo, opt => opt.MapFrom(src => src.Status.Ativo))
-                .ForMember(dest => dest.Cor, opt => opt.MapFrom(src => src.Cor.Valor));
+                .ForMember(dest => dest.Ativo, opt => opt.MapFrom(src => src.Status.Ativo));
         }
     }
 
