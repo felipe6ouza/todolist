@@ -19,7 +19,10 @@ namespace Todolist.Infrastructure.Data.Repository
 
         public IUnitOfWork UnitOfWork => Db;
 
-
+        public async Task<IEnumerable<Usuario>> ObterTodos()
+        {
+            return await DbSet.ToListAsync();
+        }
         public async Task<Usuario?> ObterPorId(int id)
         {
             return await DbSet.Include(c => c.FuncaoUsuario).FirstOrDefaultAsync(c => c.Id == id);

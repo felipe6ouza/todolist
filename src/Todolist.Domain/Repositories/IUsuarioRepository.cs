@@ -5,6 +5,7 @@ namespace Todolist.Domain.Repositories
 {
     public interface IUsuarioRepository : IRepository<Usuario>
     {
+        Task<IEnumerable<Usuario>> ObterTodos();
         Task<Usuario?> ObterPorId(int id);
         void Criar(Usuario usuario);
         void Atualizar(Usuario usuario);

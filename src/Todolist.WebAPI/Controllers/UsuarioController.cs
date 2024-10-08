@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Todolist.Application.UseCases.Queries.ListarProjetosUsuario;
+using Todolist.Application.UseCases.Queries.ListarUsuarios;
 using Todolist.Application.UseCases.Queries.ObterRelatorioDesempenho;
 
 namespace Todolist.WebAPI.Controllers
@@ -9,6 +10,19 @@ namespace Todolist.WebAPI.Controllers
     public class UsuarioController(IMediator mediator) : Controller
     {
         public readonly IMediator _mediator = mediator;
+
+        [HttpGet("todos")]
+        public async Task<IActionResult> ObterUsuarios()
+        {
+            var relatorioUsuarios = await _mediator.Send(new ListarUsuariosQuery());
+
+            if (relatorioUsuarios.IsFailed)
+                return NotFound("Nenhum usuário disponível");
+
+            return Ok(relatorioUsuarios.Value);
+        }
+
+
 
         [HttpGet("{usuarioId}/projetos")]
         public async Task<IActionResult> ListarProjetosUsuario(int usuarioId)
