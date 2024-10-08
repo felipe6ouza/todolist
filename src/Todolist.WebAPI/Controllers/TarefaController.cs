@@ -20,7 +20,7 @@ namespace Todolist.WebAPI.Controllers
         {
             var result = await _mediator.Send(new ObterDetalhesTarefaQuery { TarefaId = tarefaId });
 
-            var errorResponse = result.VerificaErroDeValidacao();
+            var errorResponse = result.VerificaErrosDeValidacao();
             if (errorResponse != null)
                 return errorResponse;
 
@@ -34,7 +34,7 @@ namespace Todolist.WebAPI.Controllers
 
             var result = await _mediator.Send(command);
 
-            var errorResponse = result.VerificaErroDeValidacao();
+            var errorResponse = result.VerificaErrosDeValidacao();
             
             if (errorResponse != null)
                 return errorResponse;
@@ -50,7 +50,7 @@ namespace Todolist.WebAPI.Controllers
 
             var result = await _mediator.Send(command);
 
-            var errorResponse = result.VerificaErroDeValidacao();
+            var errorResponse = result.VerificaErrosDeValidacao();
 
             if (errorResponse != null)
                 return errorResponse;
@@ -67,7 +67,7 @@ namespace Todolist.WebAPI.Controllers
 
             var result = await _mediator.Send(command);
 
-            var errorResponse = result.VerificaErroDeValidacao();
+            var errorResponse = result.VerificaErrosDeValidacao();
 
             if (errorResponse != null)
                 return errorResponse;
@@ -81,7 +81,7 @@ namespace Todolist.WebAPI.Controllers
         {
             var result = await _mediator.Send(new DeletarTarefaCommand { TarefaId = tarefaId });
 
-            var errorResponse = result.VerificaErroDeValidacao();
+            var errorResponse = result.VerificaErrosDeValidacao();
 
             if (errorResponse != null)
                 return errorResponse;

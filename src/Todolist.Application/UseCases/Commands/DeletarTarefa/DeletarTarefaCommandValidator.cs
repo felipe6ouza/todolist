@@ -10,6 +10,6 @@ namespace Todolist.Application.UseCases.Commands.DeletarTarefa
            .GreaterThan(0)
             .WithMessage("Campo {PropertyName} deve ser maior que 0. Valor atual: '{PropertyValue}'.");
         }
-      
+
     }
 }

@@ -19,8 +19,4 @@
     <ProjectReference Include="..\Todolist.Infrastructure\Todolist.Infrastructure.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="UseCases\Commands\DeletarProjeto\" />
-  </ItemGroup>
-
 </Project>

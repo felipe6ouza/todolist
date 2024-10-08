@@ -5,7 +5,7 @@ namespace Todolist.WebAPI.Extensions
 {
     public static class ResultExtensions
     {
-        public static IActionResult? VerificaErroDeValidacao<T>(this IResult<T> result)
+        public static IActionResult? VerificaErrosDeValidacao<T>(this IResult<T> result)
         {
             if (result.IsFailed)
             {
@@ -20,7 +20,7 @@ namespace Todolist.WebAPI.Extensions
             return null;
         }
 
-        public static IActionResult? VerificaErroDeValidacao(this Result result)
+        public static IActionResult? VerificaErrosDeValidacao(this Result result)
         {
             if (result.IsFailed)
             {

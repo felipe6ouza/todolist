@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Todolist.Application.UseCases.Commands.CriarProjeto;
+using Todolist.Application.UseCases.Commands.DeletarProjeto;
 using Todolist.Application.UseCases.Queries.ListarTarefasProjeto;
 using Todolist.WebAPI.Extensions;
 
@@ -16,7 +17,7 @@ namespace Todolist.WebAPI.Controllers
         {
             var result = await _mediator.Send(command);
 
-            var errorResponse = result.VerificaErroDeValidacao();
+            var errorResponse = result.VerificaErrosDeValidacao();
 
             if (errorResponse != null)
                 return errorResponse;
@@ -29,7 +30,7 @@ namespace Todolist.WebAPI.Controllers
         {
             var result = await _mediator.Send(new ListarTarefasProjetoQuery { ProjetoId = projetoId});
 
-            var errorResponse = result.VerificaErroDeValidacao();
+            var errorResponse = result.VerificaErrosDeValidacao();
 
             if (errorResponse != null)
                 return errorResponse;
@@ -39,5 +40,20 @@ namespace Todolist.WebAPI.Controllers
 
             return Ok(result.Value);
         }
+
+        [HttpDelete("{projetoId}")]
+        public async Task<IActionResult> DeletarProjeto(int projetoId)
+        {
+            var command = new DeletarProjetoCommand { ProjetoId = projetoId };
+            var result = await _mediator.Send(command);
+
+            var errorResponse = result.VerificaErrosDeValidacao();
+
+            if (errorResponse != null)
+                return errorResponse;
+
+            return NoContent(); 
+        }
+
     }
 }
