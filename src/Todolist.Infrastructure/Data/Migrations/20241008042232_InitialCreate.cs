@@ -5,16 +5,16 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
 
-namespace Todolist.Infrastructure.Migrations
+namespace Todolist.Infrastructure.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "FuncaoUsuario",
+                name: "FuncaoUsuarios",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -23,7 +23,7 @@ namespace Todolist.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_FuncaoUsuario", x => x.Id);
+                    table.PrimaryKey("PK_FuncaoUsuarios", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -67,9 +67,9 @@ namespace Todolist.Infrastructure.Migrations
                 {
                     table.PrimaryKey("PK_Usuarios", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Usuarios_FuncaoUsuario_FuncaoUsuarioId",
+                        name: "FK_Usuarios_FuncaoUsuarios_FuncaoUsuarioId",
                         column: x => x.FuncaoUsuarioId,
-                        principalTable: "FuncaoUsuario",
+                        principalTable: "FuncaoUsuarios",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -80,11 +80,10 @@ namespace Todolist.Infrastructure.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    AutorId = table.Column<int>(type: "int", nullable: false),
                     Nome = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
                     Favorito = table.Column<bool>(type: "bit", nullable: true),
                     Ativo = table.Column<bool>(type: "bit", nullable: true),
-                    CorHexadecimal = table.Column<string>(type: "nvarchar(7)", maxLength: 7, nullable: true)
+                    AutorId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -109,9 +108,9 @@ namespace Todolist.Infrastructure.Migrations
                     ResponsavelId = table.Column<int>(type: "int", nullable: true),
                     Nome = table.Column<string>(type: "nvarchar(280)", maxLength: 280, nullable: false),
                     Descricao = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true),
-                    DataInicial = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    DataFinal = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    StatusTarefa = table.Column<int>(type: "int", nullable: false)
+                    StatusTarefa = table.Column<int>(type: "int", nullable: false),
+                    DataInicial = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DataFinal = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -175,13 +174,41 @@ namespace Todolist.Infrastructure.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "HistoricoTarefas",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    TarefaId = table.Column<int>(type: "int", nullable: false),
+                    UsuarioId = table.Column<int>(type: "int", nullable: false),
+                    Modificacoes = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DataModificacao = table.Column<DateTime>(type: "datetime", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_HistoricoTarefas", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_HistoricoTarefas_Tarefas_TarefaId",
+                        column: x => x.TarefaId,
+                        principalTable: "Tarefas",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_HistoricoTarefas_Usuarios_UsuarioId",
+                        column: x => x.UsuarioId,
+                        principalTable: "Usuarios",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
             migrationBuilder.InsertData(
-                table: "FuncaoUsuario",
+                table: "FuncaoUsuarios",
                 columns: new[] { "Id", "Descricao" },
                 values: new object[,]
                 {
-                    { 0, "Usuario" },
-                    { 1, "Gerente" }
+                    { 1, "Colaborador" },
+                    { 2, "Gerente" }
                 });
 
             migrationBuilder.InsertData(
@@ -195,6 +222,25 @@ namespace Todolist.Infrastructure.Migrations
                     { 3, "Arquivada" }
                 });
 
+            migrationBuilder.InsertData(
+                table: "TiposPrioridade",
+                columns: new[] { "PrioridadeId", "Descricao" },
+                values: new object[,]
+                {
+                    { 1, "Alta" },
+                    { 2, "Media" },
+                    { 3, "Baixa" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Usuarios",
+                columns: new[] { "Id", "DataNascimento", "FuncaoUsuarioId", "Nome", "Sobrenome" },
+                values: new object[,]
+                {
+                    { 1, new DateTime(1998, 10, 8, 1, 22, 31, 726, DateTimeKind.Local).AddTicks(184), 1, "Felipe", "Souza" },
+                    { 2, new DateTime(1970, 10, 8, 1, 22, 31, 726, DateTimeKind.Local).AddTicks(203), 2, "Linus", "Towards" }
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Comentarios_AutorId",
                 table: "Comentarios",
@@ -204,6 +250,16 @@ namespace Todolist.Infrastructure.Migrations
                 name: "IX_Comentarios_TarefaId",
                 table: "Comentarios",
                 column: "TarefaId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_HistoricoTarefas_TarefaId",
+                table: "HistoricoTarefas",
+                column: "TarefaId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_HistoricoTarefas_UsuarioId",
+                table: "HistoricoTarefas",
+                column: "UsuarioId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Projetos_AutorId",
@@ -248,6 +304,9 @@ namespace Todolist.Infrastructure.Migrations
                 name: "Comentarios");
 
             migrationBuilder.DropTable(
+                name: "HistoricoTarefas");
+
+            migrationBuilder.DropTable(
                 name: "Tarefas");
 
             migrationBuilder.DropTable(
@@ -263,7 +322,7 @@ namespace Todolist.Infrastructure.Migrations
                 name: "Usuarios");
 
             migrationBuilder.DropTable(
-                name: "FuncaoUsuario");
+                name: "FuncaoUsuarios");
         }
     }
 }

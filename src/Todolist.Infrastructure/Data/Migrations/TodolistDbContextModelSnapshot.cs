@@ -3,20 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Todolist.Infrastructure.Context;
+using Todolist.Infrastructure.Data.Context;
 
 #nullable disable
 
-namespace Todolist.Infrastructure.Migrations
+namespace Todolist.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(TodolistDbContext))]
-    [Migration("20241007040740_Initial")]
-    partial class Initial
+    partial class TodolistDbContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -126,6 +123,24 @@ namespace Todolist.Infrastructure.Migrations
                     b.HasIndex("FuncaoUsuarioId");
 
                     b.ToTable("Usuarios", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            DataNascimento = new DateTime(1998, 10, 8, 1, 22, 31, 726, DateTimeKind.Local).AddTicks(184),
+                            FuncaoUsuarioId = 1,
+                            Nome = "Felipe",
+                            Sobrenome = "Souza"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            DataNascimento = new DateTime(1970, 10, 8, 1, 22, 31, 726, DateTimeKind.Local).AddTicks(203),
+                            FuncaoUsuarioId = 2,
+                            Nome = "Linus",
+                            Sobrenome = "Towards"
+                        });
                 });
 
             modelBuilder.Entity("Todolist.Domain.Entities.Comentario", b =>
@@ -169,19 +184,49 @@ namespace Todolist.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("FuncaoUsuario", (string)null);
+                    b.ToTable("FuncaoUsuarios", (string)null);
 
                     b.HasData(
                         new
                         {
-                            Id = 0,
-                            Descricao = "Usuario"
+                            Id = 1,
+                            Descricao = "Colaborador"
                         },
                         new
                         {
-                            Id = 1,
+                            Id = 2,
                             Descricao = "Gerente"
                         });
+                });
+
+            modelBuilder.Entity("Todolist.Domain.Entities.HistoricoTarefa", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("DataModificacao")
+                        .HasColumnType("datetime");
+
+                    b.Property<string>("Modificacoes")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("TarefaId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UsuarioId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TarefaId");
+
+                    b.HasIndex("UsuarioId");
+
+                    b.ToTable("HistoricoTarefas", (string)null);
                 });
 
             modelBuilder.Entity("Todolist.Domain.Entities.StatusTarefa", b =>
@@ -240,6 +285,23 @@ namespace Todolist.Infrastructure.Migrations
                     b.HasKey("PrioridadeId");
 
                     b.ToTable("TiposPrioridade", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            PrioridadeId = 1,
+                            Descricao = "Alta"
+                        },
+                        new
+                        {
+                            PrioridadeId = 2,
+                            Descricao = "Media"
+                        },
+                        new
+                        {
+                            PrioridadeId = 3,
+                            Descricao = "Baixa"
+                        });
                 });
 
             modelBuilder.Entity("Todolist.Domain.View.RelatorioTarefasConcluidasView", b =>
@@ -251,7 +313,6 @@ namespace Todolist.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("ResponsavelNome")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("TotalTarefasConcluidas")
@@ -269,25 +330,6 @@ namespace Todolist.Infrastructure.Migrations
                         .HasForeignKey("AutorId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-
-                    b.OwnsOne("Todolist.Domain.ValueObjects.CorHexadecimal", "Cor", b1 =>
-                        {
-                            b1.Property<int>("ProjetoId")
-                                .HasColumnType("int");
-
-                            b1.Property<string>("Valor")
-                                .IsRequired()
-                                .HasMaxLength(7)
-                                .HasColumnType("nvarchar(7)")
-                                .HasColumnName("CorHexadecimal");
-
-                            b1.HasKey("ProjetoId");
-
-                            b1.ToTable("Projetos");
-
-                            b1.WithOwner()
-                                .HasForeignKey("ProjetoId");
-                        });
 
                     b.OwnsOne("Todolist.Domain.ValueObjects.StatusProjeto", "Status", b1 =>
                         {
@@ -311,8 +353,6 @@ namespace Todolist.Infrastructure.Migrations
                         });
 
                     b.Navigation("Autor");
-
-                    b.Navigation("Cor");
 
                     b.Navigation("Status");
                 });
@@ -378,8 +418,7 @@ namespace Todolist.Infrastructure.Migrations
 
                     b.Navigation("Responsavel");
 
-                    b.Navigation("TimelineTarefa")
-                        .IsRequired();
+                    b.Navigation("TimelineTarefa");
                 });
 
             modelBuilder.Entity("Todolist.Domain.Aggregates.Usuario", b =>
@@ -409,6 +448,25 @@ namespace Todolist.Infrastructure.Migrations
                     b.Navigation("Autor");
 
                     b.Navigation("Tarefa");
+                });
+
+            modelBuilder.Entity("Todolist.Domain.Entities.HistoricoTarefa", b =>
+                {
+                    b.HasOne("Todolist.Domain.Aggregates.Tarefa", "Tarefa")
+                        .WithMany()
+                        .HasForeignKey("TarefaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Todolist.Domain.Aggregates.Usuario", "Usuario")
+                        .WithMany()
+                        .HasForeignKey("UsuarioId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Tarefa");
+
+                    b.Navigation("Usuario");
                 });
 
             modelBuilder.Entity("Todolist.Domain.Aggregates.Projeto", b =>

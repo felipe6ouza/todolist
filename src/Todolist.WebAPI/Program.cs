@@ -1,10 +1,12 @@
 
 using FluentValidation;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Todolist.Application.Behaviors;
 using Todolist.Application.ObjectMapping;
 using Todolist.Application.UseCases.Queries.ListarProjetosUsuario;
 using Todolist.Domain.Repositories;
+using Todolist.Infrastructure.Data.Context;
 using Todolist.Infrastructure.Data.Repository;
 using Todolist.WebAPI.Extensions;
 using Todolist.WebAPI.Middleware;
@@ -20,9 +22,6 @@ namespace Todolist.WebAPI
             var configuration = new ConfigurationBuilder()
             .AddJsonFile("appsettings.json")
             .Build();
-
-            // Add services to the container.
-
 
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
@@ -49,23 +48,31 @@ namespace Todolist.WebAPI
             builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(DomainExceptionBehavior<,>));
 
 
-
             var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment())
+            using (var scope = app.Services.CreateScope())
             {
-                app.UseSwagger();
-                app.UseSwaggerUI();
+                var dbContext = scope.ServiceProvider.GetRequiredService<TodolistDbContext>();
+                try
+                {
+                    dbContext.Database.Migrate(); 
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Erro ao aplicar migrações: {ex.Message}");
+                }
             }
+
+            app.UseSwagger();
+            app.UseSwaggerUI();
+
 
             app.UseMiddleware<ValidationExceptionMiddleware>();
 
 
             app.UseHttpsRedirection();
-
+   
             app.UseAuthorization();
-
 
             app.MapControllers();
 

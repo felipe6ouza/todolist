@@ -13,13 +13,20 @@ namespace Todolist.Domain.Aggregates
         public int? FuncaoUsuarioId { get; set; }
         public FuncaoUsuario? FuncaoUsuario { get; set; }
 
-        protected Usuario() { }
+        public Usuario() { }
 
         public Usuario(string nome, string sobrenome, DateTime dataNascimento)
         {
             Nome = nome;
             Sobrenome = sobrenome;
             DataNascimento = dataNascimento;
+        }
+
+        public Usuario(string nome, string sobrenome, DateTime dataNascimento, int funcaoUsuarioId, int id)
+          : this(nome, sobrenome, dataNascimento) 
+        {
+            Id = id;
+            FuncaoUsuarioId = funcaoUsuarioId;
         }
         public void AtualizarNomeUsuario(string nome, string sobrenome)
         {
