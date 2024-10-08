@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Todolist.Domain.Aggregates;
+using Todolist.Domain.Entities;
 using Todolist.Domain.Repositories;
 using Todolist.Domain.Shared;
 using Todolist.Infrastructure.Context;
@@ -55,11 +56,16 @@ namespace Todolist.Infrastructure.Repository
             DbSet.Remove(tarefa);
         }
 
+        public async Task AdicionarHistoricoTarefa(HistoricoTarefa historicoTarefa)
+        {
+           await Db.HistoricoTarefas.AddAsync(historicoTarefa);
+        }
+
         public void Dispose()
         {
             Db.Dispose();
         }
 
-       
+      
     }
 }

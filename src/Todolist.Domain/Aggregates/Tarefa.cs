@@ -35,7 +35,7 @@ namespace Todolist.Domain.Aggregates
         public int StatusTarefa { get; private set; }
 
 
-        private readonly List<Comentario> _comentarios = [];
+        private List<Comentario> _comentarios = [];
         public IReadOnlyCollection<Comentario> Comentarios => _comentarios;
 
 
@@ -89,6 +89,23 @@ namespace Todolist.Domain.Aggregates
             {
                 StatusTarefa = (int)status;
             }
+        }
+
+        public Tarefa Clone()
+        {
+            return new Tarefa
+            {
+                Id = this.Id,
+                Nome = this.Nome,
+                Descricao = this.Descricao,
+                TimelineTarefa = this.TimelineTarefa,
+                ProjetoId = this.ProjetoId,
+                PrioridadeId = this.PrioridadeId,
+                AutorId = this.AutorId,
+                ResponsavelId = this.ResponsavelId,
+                StatusTarefa = this.StatusTarefa,
+                _comentarios = new List<Comentario>(_comentarios.Select(c => new Comentario(c.Id, c.AutorId, c.Descricao))) 
+            };
         }
 
     }

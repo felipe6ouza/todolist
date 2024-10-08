@@ -1,4 +1,5 @@
 ﻿using Todolist.Domain.Aggregates;
+using Todolist.Domain.Entities;
 using Todolist.Domain.Shared;
 namespace Todolist.Domain.Repositories
 {
@@ -10,6 +11,6 @@ namespace Todolist.Domain.Repositories
         void Update(Tarefa tarefa);
         void Remove(Tarefa tarefa);
         Task<IEnumerable<Tarefa>> ObterTarefasPorProjetoId(int projetoId);
-
+        Task AdicionarHistoricoTarefa(HistoricoTarefa tarefa);
     }
 }
