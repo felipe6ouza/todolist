@@ -1,9 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
-using Todolist.Domain.Aggregates;
 using Todolist.Domain.Entities;
 
-namespace Todolist.Infrastructure.Mappings
+namespace Todolist.Infrastructure.Data.DatabaseMappings
 {
     public class HistoricoTarefaMapping : IEntityTypeConfiguration<HistoricoTarefa>
     {
@@ -20,11 +19,11 @@ namespace Todolist.Infrastructure.Mappings
              .OnDelete(DeleteBehavior.Cascade);
 
             builder.Property(ht => ht.Modificacoes)
-                      .HasColumnType("nvarchar(max)")  
+                      .HasColumnType("nvarchar(max)")
                       .IsRequired();
 
             builder.HasOne(ht => ht.Usuario)
-              .WithMany() 
+              .WithMany()
               .HasForeignKey(ht => ht.UsuarioId)
               .OnDelete(DeleteBehavior.Restrict);
 

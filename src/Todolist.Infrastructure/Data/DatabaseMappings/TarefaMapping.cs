@@ -1,11 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System.Reflection.Emit;
 using Todolist.Domain.Aggregates;
 using Todolist.Domain.Entities;
 
 
-namespace Todolist.Infrastructure.Mappings
+namespace Todolist.Infrastructure.Data.DatabaseMappings
 {
     public class TarefaMapping : IEntityTypeConfiguration<Tarefa>
     {
@@ -31,21 +30,21 @@ namespace Todolist.Infrastructure.Mappings
                 .WithMany()
                 .HasForeignKey("PrioridadeId")
                 .IsRequired()
-                .OnDelete(DeleteBehavior.Restrict); 
+                .OnDelete(DeleteBehavior.Restrict);
 
             // Relacionamento com Autor (muitos para um)
             builder.HasOne(t => t.Autor)
                 .WithMany()
                 .HasForeignKey("AutorId")
                 .IsRequired()
-                .OnDelete(DeleteBehavior.Restrict); 
+                .OnDelete(DeleteBehavior.Restrict);
 
             // Relacionamento com Responsavel (muitos para um, opcional)
             builder.HasOne(t => t.Responsavel)
                 .WithMany()
                 .HasForeignKey("ResponsavelId")
                 .IsRequired(false)
-                .OnDelete(DeleteBehavior.Restrict); 
+                .OnDelete(DeleteBehavior.Restrict);
 
             // Objeto de Valor (TemposDaTarefa)
             builder.OwnsOne(t => t.TimelineTarefa, tt =>
@@ -60,7 +59,7 @@ namespace Todolist.Infrastructure.Mappings
             });
 
             // Referência para StatusTarefa
-            builder.HasOne<StatusTarefa>() 
+            builder.HasOne<StatusTarefa>()
                .WithMany()
                .HasForeignKey(t => t.StatusTarefa)
                .IsRequired()

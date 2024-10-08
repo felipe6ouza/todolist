@@ -6,13 +6,13 @@ using Todolist.Domain.ValueObjects;
 
 namespace Todolist.Application.UseCases.Commands.CriarProjeto
 {
-    public class CriarProjetoCommandHandler(IProjetoRepository projetoRepository, IUsuarioRepository autorRepository) : IRequestHandler<CriarProjetoCommand, Result<int>>
+    public class CriarProjetoCommandHandler(IProjetoRepository projetoRepository, IUsuarioRepository autorRepository) : IRequestHandler<CriarProjetoCommand, IResult<int>>
     {
         private readonly IProjetoRepository _projetoRepository = projetoRepository;
 
         private readonly IUsuarioRepository _usuarioRepository = autorRepository;
 
-        public async Task<Result<int>> Handle(CriarProjetoCommand request, CancellationToken cancellationToken)
+        public async Task<IResult<int>> Handle(CriarProjetoCommand request, CancellationToken cancellationToken)
 
         {
             var autor = await _usuarioRepository.ObterPorId(request.AutorId);
@@ -25,7 +25,7 @@ namespace Todolist.Application.UseCases.Commands.CriarProjeto
 
             var projeto = new Projeto(request.Nome, autor, request.Favorito);
           
-            _projetoRepository.Add(projeto); 
+            _projetoRepository.Criar(projeto); 
 
             await _projetoRepository.UnitOfWork.Commit();
 

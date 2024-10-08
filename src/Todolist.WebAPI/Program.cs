@@ -1,15 +1,11 @@
 
 using FluentValidation;
 using MediatR;
-using Microsoft.AspNetCore.Hosting;
-using System.Globalization;
 using Todolist.Application.Behaviors;
-using Todolist.Application.Mapping;
+using Todolist.Application.ObjectMapping;
 using Todolist.Application.UseCases.Queries.ListarProjetosUsuario;
 using Todolist.Domain.Repositories;
-using Todolist.Domain.Shared;
-using Todolist.Infrastructure.Context;
-using Todolist.Infrastructure.Repository;
+using Todolist.Infrastructure.Data.Repository;
 using Todolist.WebAPI.Extensions;
 using Todolist.WebAPI.Middleware;
 

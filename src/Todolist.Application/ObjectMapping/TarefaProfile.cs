@@ -1,9 +1,8 @@
 ﻿using AutoMapper;
-using Todolist.Application.UseCases.Queries.ListarTarefasProjeto;
-using Todolist.Application.UseCases.Queries.ObterDetalhesTarefa;
+using Todolist.Application.ViewModel;
 using Todolist.Domain.Aggregates;
 
-namespace Todolist.Application.Mapping
+namespace Todolist.Application.ObjectMapping
 {
     public class TarefaProfile : Profile
     {

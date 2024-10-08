@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Todolist.Infrastructure.Context;
+using Todolist.Infrastructure.Data.Context;
 
 namespace Todolist.WebAPI.Extensions
 {

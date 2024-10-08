@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using Todolist.Application.ViewModel;
 using Todolist.Domain.Repositories;
 
 namespace Todolist.Application.UseCases.Queries.ListarProjetosUsuario

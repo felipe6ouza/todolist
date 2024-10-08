@@ -1,9 +1,9 @@
 ﻿using Todolist.Domain.Entities;
 
-namespace Todolist.Application.UseCases.Queries.ObterDetalhesTarefa
+namespace Todolist.Application.ViewModel
 {
 
-    public class ComentarioViewModel 
+    public class ComentarioViewModel
     {
         public int Id { get; private set; }
         public string Descricao { get; private set; }

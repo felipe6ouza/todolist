@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Todolist.Application.ViewModel;
 using Todolist.Domain.Shared;
 
 namespace Todolist.Application.UseCases.Queries.ListarProjetosUsuario

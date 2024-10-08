@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Todolist.Application.UseCases.Commands.CriarProjeto;
 using Todolist.Application.UseCases.Queries.ListarTarefasProjeto;
+using Todolist.WebAPI.Extensions;
 
 namespace Todolist.WebAPI.Controllers
 {
@@ -13,10 +14,12 @@ namespace Todolist.WebAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> CriarProjeto([FromBody] CriarProjetoCommand command)
         {
-            var result = await _mediator.Send(command); 
+            var result = await _mediator.Send(command);
 
-            if (result.IsFailed) 
-                return BadRequest(result.Errors.Select(e => e.Message)); 
+            var errorResponse = result.VerificaErroDeValidacao();
+
+            if (errorResponse != null)
+                return errorResponse;
 
             return CreatedAtAction(nameof(CriarProjeto), new { id = result.Value});
         }
@@ -26,10 +29,12 @@ namespace Todolist.WebAPI.Controllers
         {
             var result = await _mediator.Send(new ListarTarefasProjetoQuery { ProjetoId = projetoId});
 
-            if (result.IsFailed)
-                return BadRequest(result.Errors.Select(e => e.Message));
+            var errorResponse = result.VerificaErroDeValidacao();
 
-            if(!result.Value.Any())
+            if (errorResponse != null)
+                return errorResponse;
+
+            if (!result.Value.Any())
                 return NotFound("Nenhuma tarefa encontrada para este projeto.");
 
             return Ok(result.Value);

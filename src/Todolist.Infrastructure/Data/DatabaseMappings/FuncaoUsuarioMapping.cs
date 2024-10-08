@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Todolist.Domain.Entities;
 using Todolist.Domain.Enum;
 
-namespace Todolist.Infrastructure.Mappings
+namespace Todolist.Infrastructure.Data.DatabaseMappings
 {
 
     public class FuncaoUsuarioMapping : IEntityTypeConfiguration<FuncaoUsuario>
@@ -23,7 +23,7 @@ namespace Todolist.Infrastructure.Mappings
              .HasForeignKey(u => u.FuncaoUsuarioId)
              .OnDelete(DeleteBehavior.Restrict);
             builder.HasData(
-                    new { Id = (int)FuncaoUsuarioEnum.Colaborador, Descricao = FuncaoUsuarioEnum.Colaborador.ToString()},
+                    new { Id = (int)FuncaoUsuarioEnum.Colaborador, Descricao = FuncaoUsuarioEnum.Colaborador.ToString() },
                     new { Id = (int)FuncaoUsuarioEnum.Gerente, Descricao = FuncaoUsuarioEnum.Gerente.ToString() });
         }
 

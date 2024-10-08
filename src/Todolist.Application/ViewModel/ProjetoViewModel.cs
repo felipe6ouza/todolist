@@ -1,4 +1,4 @@
-﻿namespace Todolist.Application.UseCases.Queries.ListarProjetosUsuario
+﻿namespace Todolist.Application.ViewModel
 {
     public class ProjetoViewModel
     {

@@ -39,10 +39,12 @@ namespace Todolist.Domain.Aggregates
         public IReadOnlyCollection<Comentario> Comentarios => _comentarios;
 
 
-        public void AdicionarComentario(string descricao, int usuarioId)
+        public Comentario AdicionarComentario(string descricao, int usuarioId)
         {
-            var comentario = new Comentario(Id, usuarioId, descricao);
+            var comentario = new Comentario(this.Id, usuarioId, descricao);
             _comentarios.Add(comentario);
+
+            return comentario;
         }
 
         public void AtualizarPrioridade(int prioridadeId)

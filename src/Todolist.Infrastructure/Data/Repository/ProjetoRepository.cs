@@ -2,9 +2,9 @@
 using Todolist.Domain.Aggregates;
 using Todolist.Domain.Repositories;
 using Todolist.Domain.Shared;
-using Todolist.Infrastructure.Context;
+using Todolist.Infrastructure.Data.Context;
 
-namespace Todolist.Infrastructure.Repository
+namespace Todolist.Infrastructure.Data.Repository
 {
     public class ProjetoRepository : IProjetoRepository
     {
@@ -19,31 +19,24 @@ namespace Todolist.Infrastructure.Repository
 
         public IUnitOfWork UnitOfWork => Db;
 
-        public async Task<Projeto?> GetById(int id)
+        public async Task<Projeto?> ObterPorId(int id)
         {
             return await DbSet
                 .Include(c => c.Tarefas)
-                .Include(c => c.Autor)  
-                .FirstOrDefaultAsync(c => c.Id == id); 
+                .Include(c => c.Autor)
+                .FirstOrDefaultAsync(c => c.Id == id);
         }
-
-        public async Task<IEnumerable<Projeto>> GetAll()
-        {
-            return await DbSet.ToListAsync();
-        }
-
-
-        public void Add(Projeto projeto)
+        public void Criar(Projeto projeto)
         {
             DbSet.Add(projeto);
         }
 
-        public void Update(Projeto projeto)
+        public void Atualizar(Projeto projeto)
         {
             DbSet.Update(projeto);
         }
 
-        public void Remove(Projeto projeto)
+        public void Remover(Projeto projeto)
         {
             DbSet.Remove(projeto);
         }
@@ -55,7 +48,7 @@ namespace Todolist.Infrastructure.Repository
 
         public async Task<IEnumerable<Projeto>> BuscarProjetosUsuario(int id)
         {
-            return await DbSet.Include(c => c.Tarefas).Include(c=> c.Autor).Where(c => c.Autor.Id == id).ToListAsync();
+            return await DbSet.Include(c => c.Tarefas).Include(c => c.Autor).Where(c => c.Autor.Id == id).ToListAsync();
         }
     }
 }

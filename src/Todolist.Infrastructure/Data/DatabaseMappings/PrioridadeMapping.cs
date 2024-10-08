@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Todolist.Domain.Entities;
 
-namespace Todolist.Infrastructure.Mappings
+namespace Todolist.Infrastructure.Data.DatabaseMappings
 {
     public class PrioridadeMapping : IEntityTypeConfiguration<TipoPrioridade>
     {
@@ -14,11 +14,11 @@ namespace Todolist.Infrastructure.Mappings
 
             // Propriedades
             builder.Property(tp => tp.PrioridadeId)
-                .ValueGeneratedOnAdd(); 
+                .ValueGeneratedOnAdd();
 
             builder.Property(tp => tp.Descricao)
                 .IsRequired()
-                .HasMaxLength(30); 
+                .HasMaxLength(30);
         }
     }
 

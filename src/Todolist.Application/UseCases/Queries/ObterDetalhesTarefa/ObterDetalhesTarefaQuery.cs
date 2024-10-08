@@ -1,6 +1,6 @@
 ﻿using FluentResults;
 using MediatR;
-using Todolist.Domain.Aggregates;
+using Todolist.Application.ViewModel;
 
 namespace Todolist.Application.UseCases.Queries.ObterDetalhesTarefa
 {

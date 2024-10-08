@@ -10,13 +10,13 @@ namespace Todolist.Application.UseCases.Commands.DeletarTarefa
 
         public async Task<Result> Handle(DeletarTarefaCommand request, CancellationToken cancellationToken)
         {
-            var tarefa = await _tarefaRepository.GetById(request.TarefaId);
+            var tarefa = await _tarefaRepository.ObterPorId(request.TarefaId);
 
             if(tarefa == null) 
                 return Result.Fail("Tarefa não encontrada");
 
 
-            _tarefaRepository.Remove(tarefa!);
+            _tarefaRepository.Remover(tarefa!);
             await _tarefaRepository.UnitOfWork.Commit();
 
 

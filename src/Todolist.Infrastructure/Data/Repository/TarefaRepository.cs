@@ -3,10 +3,10 @@ using Todolist.Domain.Aggregates;
 using Todolist.Domain.Entities;
 using Todolist.Domain.Repositories;
 using Todolist.Domain.Shared;
-using Todolist.Infrastructure.Context;
+using Todolist.Infrastructure.Data.Context;
 
 
-namespace Todolist.Infrastructure.Repository
+namespace Todolist.Infrastructure.Data.Repository
 {
     public class TarefaRepository : ITarefaRepository
     {
@@ -21,17 +21,12 @@ namespace Todolist.Infrastructure.Repository
 
         public IUnitOfWork UnitOfWork => Db;
 
-        public async Task<Tarefa?> GetById(int id)
+        public async Task<Tarefa?> ObterPorId(int id)
         {
             return await DbSet.Include(c => c.Autor)
                 .Include(c => c.Responsavel)
                 .Include(c => c.Comentarios)
                 .Include(c => c.Projeto).FirstOrDefaultAsync(c => c.Id == id);
-        }
-
-        public async Task<IEnumerable<Tarefa>> GetAll()
-        {
-            return await DbSet.ToListAsync();
         }
 
         public async Task<IEnumerable<Tarefa>> ObterTarefasPorProjetoId(int projetoId)
@@ -41,24 +36,24 @@ namespace Todolist.Infrastructure.Repository
                 .ToListAsync();
         }
 
-        public void Add(Tarefa tarefa)
+        public void Criar(Tarefa tarefa)
         {
             DbSet.Add(tarefa);
         }
 
-        public void Update(Tarefa tarefa)
+        public void Atualizar(Tarefa tarefa)
         {
             DbSet.Update(tarefa);
         }
 
-        public void Remove(Tarefa tarefa)
+        public void Remover(Tarefa tarefa)
         {
             DbSet.Remove(tarefa);
         }
 
         public async Task AdicionarHistoricoTarefa(HistoricoTarefa historicoTarefa)
         {
-           await Db.HistoricoTarefas.AddAsync(historicoTarefa);
+            await Db.HistoricoTarefas.AddAsync(historicoTarefa);
         }
 
         public void Dispose()
@@ -66,6 +61,6 @@ namespace Todolist.Infrastructure.Repository
             Db.Dispose();
         }
 
-      
+
     }
 }

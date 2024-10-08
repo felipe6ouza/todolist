@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Todolist.Domain.Repositories;
 using Todolist.Domain.View;
-using Todolist.Infrastructure.Context;
+using Todolist.Infrastructure.Data.Context;
 
-namespace Todolist.Infrastructure.Repository
+namespace Todolist.Infrastructure.Data.Repository
 {
     public class RelatorioDesempenhoRepository(TodolistDbContext context) : IRelatorioDesempenhoRepository
     {

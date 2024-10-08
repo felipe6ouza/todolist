@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using Todolist.Application.UseCases.Queries.ListarProjetosUsuario;
+using Todolist.Application.ViewModel;
 using Todolist.Domain.Aggregates;
 
-namespace Todolist.Application.Mapping
+namespace Todolist.Application.ObjectMapping
 {
     public class ProjetoProfile : Profile
     {

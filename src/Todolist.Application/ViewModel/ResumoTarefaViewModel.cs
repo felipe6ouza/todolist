@@ -1,4 +1,4 @@
-﻿namespace Todolist.Application.UseCases.Queries.ListarTarefasProjeto
+﻿namespace Todolist.Application.ViewModel
 {
     public class ResumoTarefaViewModel
     {

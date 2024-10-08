@@ -1,5 +1,4 @@
 ﻿using FluentValidation;
-using Microsoft.AspNetCore.Mvc;
 
 namespace Todolist.WebAPI.Middleware
 {
@@ -15,22 +14,16 @@ namespace Todolist.WebAPI.Middleware
             }
             catch (ValidationException exception)
             {
-                var problemDetails = new ProblemDetails
-                {
-                    Status = StatusCodes.Status400BadRequest,
-                    Type = "ValidationFailure",
-                    Title = "Erro de Validação",
-                    Detail = "Um ou mais erros de validação ocorreram."
-                };
-
-                if (exception.Errors is not null)
-                {
-                    problemDetails.Extensions["errors"] = exception.Errors;
-                }
-
                 context.Response.StatusCode = StatusCodes.Status400BadRequest;
 
-                await context.Response.WriteAsJsonAsync(problemDetails);
+                var erros = exception.Errors.Select(e => new
+                {
+                    propertyName = e.PropertyName,
+                    errorMessage = e.ErrorMessage
+                });
+
+                await context.Response.WriteAsJsonAsync(new { Erros = erros });
+
             }
         }
     }

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using FluentResults;
 using MediatR;
+using Todolist.Application.ViewModel;
 using Todolist.Domain.Repositories;
 
 namespace Todolist.Application.UseCases.Queries.ListarTarefasProjeto
@@ -14,7 +15,7 @@ namespace Todolist.Application.UseCases.Queries.ListarTarefasProjeto
 
         public async Task<IResult<IEnumerable<ResumoTarefaViewModel>>> Handle(ListarTarefasProjetoQuery request, CancellationToken cancellationToken)
         {
-            var projeto = await _projetoRepository.GetById(request.ProjetoId);
+            var projeto = await _projetoRepository.ObterPorId(request.ProjetoId);
 
             if(projeto == null)
                 return Result.Fail<IEnumerable<ResumoTarefaViewModel>>("Projeto Não Existe");

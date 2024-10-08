@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using Todolist.Application.UseCases.Queries.ObterDetalhesTarefa;
+using Todolist.Application.ViewModel;
 using Todolist.Domain.Entities;
 
-namespace Todolist.Application.Mapping
+namespace Todolist.Application.ObjectMapping
 {
     internal class ComentarioProfile : Profile
     {

@@ -21,8 +21,6 @@
 
   <ItemGroup>
     <Folder Include="UseCases\Commands\DeletarProjeto\" />
-    <Folder Include="UseCases\Commands\AdicionarComentarioTarefa\" />
-    <Folder Include="UseCases\Commands\DeletarComentarioTarefa\" />
   </ItemGroup>
 
 </Project>

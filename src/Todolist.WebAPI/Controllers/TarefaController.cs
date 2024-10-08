@@ -1,9 +1,11 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Todolist.Application.UseCases.Commands.AdicionarComentarioTarefa;
 using Todolist.Application.UseCases.Commands.AtualizarTarefa;
 using Todolist.Application.UseCases.Commands.CriarTarefa;
 using Todolist.Application.UseCases.Commands.DeletarTarefa;
 using Todolist.Application.UseCases.Queries.ObterDetalhesTarefa;
+using Todolist.WebAPI.Extensions;
 
 namespace Todolist.WebAPI.Controllers
 {
@@ -18,8 +20,9 @@ namespace Todolist.WebAPI.Controllers
         {
             var result = await _mediator.Send(new ObterDetalhesTarefaQuery { TarefaId = tarefaId });
 
-            if (result.IsFailed)
-                return BadRequest(result.Errors.Select(e => e.Message));
+            var errorResponse = result.VerificaErroDeValidacao();
+            if (errorResponse != null)
+                return errorResponse;
 
             return Ok(result.Value);
         }
@@ -31,20 +34,43 @@ namespace Todolist.WebAPI.Controllers
 
             var result = await _mediator.Send(command);
 
-            if (result.IsFailed)
-                return BadRequest(result.Errors.Select(e => e.Message));
+            var errorResponse = result.VerificaErroDeValidacao();
+            
+            if (errorResponse != null)
+                return errorResponse;
+  
+            return CreatedAtAction(nameof(AdicionarTarefa), new { id = result.Value });
+        }
+
+
+        [HttpPost("{tarefaId}/comentario")]
+        public async Task<IActionResult> AdicionarComentarioTarefa(int tarefaId, [FromBody] AdicionarComentarioTarefaCommand command)
+        {
+            command.TarefaId = tarefaId;
+
+            var result = await _mediator.Send(command);
+
+            var errorResponse = result.VerificaErroDeValidacao();
+
+            if (errorResponse != null)
+                return errorResponse;
 
             return CreatedAtAction(nameof(AdicionarTarefa), new { id = result.Value });
         }
 
 
-        [HttpPut]
-        public async Task<IActionResult> AtualizarTarefa([FromBody] AtualizarTarefaCommand command)
+
+        [HttpPut("{tarefaId}")]
+        public async Task<IActionResult> AtualizarTarefa(int tarefaId, [FromBody] AtualizarTarefaCommand command)
         {
+            command.TarefaId = tarefaId;
+
             var result = await _mediator.Send(command);
 
-            if (result.IsFailed)
-                return BadRequest(result.Errors.Select(e => e.Message));
+            var errorResponse = result.VerificaErroDeValidacao();
+
+            if (errorResponse != null)
+                return errorResponse;
 
             return NoContent();
         }
@@ -55,8 +81,10 @@ namespace Todolist.WebAPI.Controllers
         {
             var result = await _mediator.Send(new DeletarTarefaCommand { TarefaId = tarefaId });
 
-            if (result.IsFailed)
-                return BadRequest(result.Errors.Select(e => e.Message));
+            var errorResponse = result.VerificaErroDeValidacao();
+
+            if (errorResponse != null)
+                return errorResponse;
 
             return NoContent();
         }

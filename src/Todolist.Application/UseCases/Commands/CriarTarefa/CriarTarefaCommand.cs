@@ -4,7 +4,7 @@ using Todolist.Domain.Shared;
 
 namespace Todolist.Application.UseCases.Commands.CriarTarefa
 {
-    public class CriarTarefaCommand : IRequest<Result<int>>, ICommandBase
+    public class CriarTarefaCommand : IRequest<IResult<int>>, ICommandBase
     {
         public int ProjetoId { get; set; }
         public int PrioridadeId { get; set; }

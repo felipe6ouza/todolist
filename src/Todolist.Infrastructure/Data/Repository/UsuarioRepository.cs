@@ -1,11 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Todolist.Domain.Aggregates;
-using Todolist.Domain.Entities;
 using Todolist.Domain.Repositories;
 using Todolist.Domain.Shared;
-using Todolist.Infrastructure.Context;
+using Todolist.Infrastructure.Data.Context;
 
-namespace Todolist.Infrastructure.Repository
+namespace Todolist.Infrastructure.Data.Repository
 {
     public class UsuarioRepository : IUsuarioRepository
     {
@@ -20,29 +19,23 @@ namespace Todolist.Infrastructure.Repository
 
         public IUnitOfWork UnitOfWork => Db;
 
-       
+
         public async Task<Usuario?> ObterPorId(int id)
         {
-             return await DbSet.Include(c => c.FuncaoUsuario).FirstOrDefaultAsync(c => c.Id == id);
+            return await DbSet.Include(c => c.FuncaoUsuario).FirstOrDefaultAsync(c => c.Id == id);
         }
 
-        public async Task<IEnumerable<Usuario>> GetAll()
-        {
-            return await DbSet.ToListAsync();
-        }
-
-
-        public void Add(Usuario usuario)
+        public void Criar(Usuario usuario)
         {
             DbSet.Add(usuario);
         }
 
-        public void Update(Usuario usuario)
+        public void Atualizar(Usuario usuario)
         {
             DbSet.Update(usuario);
         }
 
-        public void Remove(Usuario usuario)
+        public void Remover(Usuario usuario)
         {
             DbSet.Remove(usuario);
         }

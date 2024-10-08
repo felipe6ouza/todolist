@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Todolist.Domain.Entities;
 
 
-namespace Todolist.Infrastructure.Mappings
+namespace Todolist.Infrastructure.Data.DatabaseMappings
 {
     public class ComentarioMapping : IEntityTypeConfiguration<Comentario>
     {

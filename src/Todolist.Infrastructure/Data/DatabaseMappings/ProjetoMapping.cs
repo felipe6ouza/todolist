@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Todolist.Domain.Aggregates;
 
 
-namespace Todolist.Infrastructure.Mappings
+namespace Todolist.Infrastructure.Data.DatabaseMappings
 {
     public class ProjetoMapping : IEntityTypeConfiguration<Projeto>
     {
@@ -15,11 +15,11 @@ namespace Todolist.Infrastructure.Mappings
 
             // Propriedades
             builder.Property(p => p.Id)
-                .ValueGeneratedOnAdd(); 
+                .ValueGeneratedOnAdd();
 
             builder.Property(p => p.Nome)
                 .IsRequired()
-                .HasMaxLength(150); 
+                .HasMaxLength(150);
 
             // Relacionamento com Autor (Usuario)
             builder.HasOne(p => p.Autor)

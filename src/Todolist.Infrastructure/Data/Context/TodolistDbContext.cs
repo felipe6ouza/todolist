@@ -3,10 +3,9 @@ using Todolist.Domain.Aggregates;
 using Todolist.Domain.Entities;
 using Todolist.Domain.Shared;
 using Todolist.Domain.View;
-using Todolist.Infrastructure.Mappings;
-using Tarefa = Todolist.Domain.Aggregates.Tarefa;
+using Todolist.Infrastructure.Data.DatabaseMappings;
 
-namespace Todolist.Infrastructure.Context
+namespace Todolist.Infrastructure.Data.Context
 {
 
     public class TodolistDbContext(DbContextOptions<TodolistDbContext> options) : DbContext(options), IUnitOfWork
@@ -36,7 +35,7 @@ namespace Todolist.Infrastructure.Context
 
 
             modelBuilder.Entity<RelatorioTarefasConcluidasView>()
-               .HasNoKey() 
+               .HasNoKey()
                .ToView("vwRelatorioDesempenho");
         }
 

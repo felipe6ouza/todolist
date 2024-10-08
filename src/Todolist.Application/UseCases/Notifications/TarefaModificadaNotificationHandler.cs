@@ -1,8 +1,9 @@
 ﻿using MediatR;
+using System.Text.Json;
 using Todolist.Domain.Entities;
 using Todolist.Domain.Repositories;
 
-namespace Todolist.Application.UseCases.Commands.AtualizarTarefa
+namespace Todolist.Application.UseCases.Notifications
 {
     public class TarefaModificadaNotificationHandler(ITarefaRepository tarefaRepository) : INotificationHandler<TarefaModificadaNotification>
     {
@@ -10,9 +11,15 @@ namespace Todolist.Application.UseCases.Commands.AtualizarTarefa
 
         public async Task Handle(TarefaModificadaNotification notification, CancellationToken cancellationToken)
         {
+            var modificacoesJson = JsonSerializer.Serialize(new
+            {
+                notification.TarefaEstadoAnterior,
+                notification.TarefaEstadoAtual,
+            });
+
             var historico = new HistoricoTarefa(
-                notification.Tarefa.Id,
-                notification.ModificacoesJson,
+                notification.TarefaEstadoAtual.Id,
+                modificacoesJson,
                 notification.DataHora,
                 notification.UsuarioId
             );
