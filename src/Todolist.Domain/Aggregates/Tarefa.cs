@@ -7,8 +7,28 @@ namespace Todolist.Domain.Aggregates
 {
     public class Tarefa : IAggregateRoot
     {
-        public Tarefa() { }
-        
+        public int Id { get; private set; }
+        public int ProjetoId { get; private set; }
+        public int PrioridadeId { get; private set; }  
+        public int? AutorId { get; private set; }
+        public int? ResponsavelId { get; private set; }
+        public string? Nome { get; private set; } 
+        public string? Descricao { get; private set; } 
+        public int StatusTarefa { get; private set; }
+        public TimelineTarefa? TimelineTarefa { get; private set; }
+        public TipoPrioridade? Prioridade { get; private set; }
+
+
+        public Projeto? Projeto { get; private set; }
+        public Usuario? Autor { get; private set; }
+        public Usuario? Responsavel { get; private set; }
+
+        private readonly List<Comentario> _comentarios = [];
+        public IReadOnlyCollection<Comentario> Comentarios => _comentarios;
+
+
+        protected Tarefa() { }
+
         public Tarefa(string nome, int projetoId, int prioridadeId, int autorId, TimelineTarefa timelineTarefa, string? descricao, int? responsavelId = null)
         {
             Nome = nome;
@@ -20,24 +40,6 @@ namespace Todolist.Domain.Aggregates
             StatusTarefa = (int)StatusTarefaEnum.Pendente;
             ResponsavelId = responsavelId;
         }
-        public int Id { get; private set; }
-        public int ProjetoId { get; private set; }
-        public Projeto? Projeto { get; private set; }
-        public int PrioridadeId { get; private set; }  
-        public TipoPrioridade? Prioridade { get; private set; }
-        public int? AutorId { get; private set; }
-        public Usuario? Autor { get; private set; }
-        public int? ResponsavelId { get; private set; }
-        public Usuario? Responsavel { get; private set; }
-        public string? Nome { get; private set; } 
-        public string? Descricao { get; private set; } 
-        public TimelineTarefa TimelineTarefa { get; private set; }
-        public int StatusTarefa { get; private set; }
-
-
-        private List<Comentario> _comentarios = [];
-        public IReadOnlyCollection<Comentario> Comentarios => _comentarios;
-
 
         public Comentario AdicionarComentario(string descricao, int usuarioId)
         {
@@ -73,7 +75,7 @@ namespace Todolist.Domain.Aggregates
         {
             if (dataFinal.HasValue)
             {
-                TimelineTarefa.AtualizarDataFinal((DateTime)dataFinal);
+                TimelineTarefa?.AtualizarDataFinal((DateTime)dataFinal);
             }
         }
 
@@ -92,24 +94,6 @@ namespace Todolist.Domain.Aggregates
                 StatusTarefa = (int)status;
             }
         }
-
-        public Tarefa Clone()
-        {
-            return new Tarefa
-            {
-                Id = this.Id,
-                Nome = this.Nome,
-                Descricao = this.Descricao,
-                TimelineTarefa = this.TimelineTarefa,
-                ProjetoId = this.ProjetoId,
-                PrioridadeId = this.PrioridadeId,
-                AutorId = this.AutorId,
-                ResponsavelId = this.ResponsavelId,
-                StatusTarefa = this.StatusTarefa,
-                _comentarios = new List<Comentario>(_comentarios.Select(c => new Comentario(c.Id, c.AutorId, c.Descricao))) 
-            };
-        }
-
     }
 
 }

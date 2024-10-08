@@ -43,6 +43,8 @@ namespace Todolist.Infrastructure.Data.Repository
         public void Dispose()
         {
             Db.Dispose();
+            GC.SuppressFinalize(this); 
+
         }
     }
 }

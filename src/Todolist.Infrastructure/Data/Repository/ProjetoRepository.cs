@@ -44,11 +44,13 @@ namespace Todolist.Infrastructure.Data.Repository
         public void Dispose()
         {
             Db.Dispose();
+            GC.SuppressFinalize(this); 
+
         }
 
         public async Task<IEnumerable<Projeto>> BuscarProjetosUsuario(int id)
         {
-            return await DbSet.Include(c => c.Tarefas).Include(c => c.Autor).Where(c => c.Autor.Id == id).ToListAsync();
+            return await DbSet.Include(c => c.Tarefas).Include(c => c.Autor).Where(c => c.Autor!.Id == id).ToListAsync();
         }
     }
 }

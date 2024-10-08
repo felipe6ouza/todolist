@@ -9,7 +9,7 @@ namespace Todolist.Application.ObjectMapping
         public ComentarioProfile()
         {
             CreateMap<Comentario, ComentarioViewModel>()
-           .ForMember(dest => dest.AutorNome, opt => opt.MapFrom(src => src.Autor.Nome));
+           .ForMember(dest => dest.AutorNome, opt => opt.MapFrom(src => src.Autor!.Nome));
         }
     }
 }

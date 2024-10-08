@@ -1,13 +1,7 @@
 ﻿namespace Todolist.Domain.Shared
 {
-    public class DomainException : Exception
+    public class DomainException(string message) : Exception(message)
     {
-        public DomainException() : base() { }
-
-        public DomainException(string message) : base(message) { }
-
-        public DomainException(string message, Exception innerException)
-            : base(message, innerException) { }
     }
 
 }

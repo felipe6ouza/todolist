@@ -13,7 +13,6 @@ namespace Todolist.Infrastructure.Data.DatabaseMappings
 
             builder.HasKey(p => p.Id);
 
-            // Propriedades
             builder.Property(p => p.Id)
                 .ValueGeneratedOnAdd();
 

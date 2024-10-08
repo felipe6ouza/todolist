@@ -14,7 +14,6 @@ namespace Todolist.Infrastructure.Data.DatabaseMappings
 
             builder.HasKey(t => t.Id);
 
-            // Propriedades
             builder.Property(t => t.Id)
                 .ValueGeneratedOnAdd();
 

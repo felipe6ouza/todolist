@@ -6,25 +6,23 @@ namespace Todolist.Domain.Aggregates
     public class Projeto : IAggregateRoot
     {
         const int NUMERO_MAXIMO_TAREFAS = 20;
-        protected Projeto()
-        {
+       
+        public int Id { get; private set; }
+        public string? Nome { get; private set; } 
+        public StatusProjeto? Status { get; private set; }
+        public Usuario? Autor { get; private set; }
 
-        }
+        private readonly List<Tarefa> _tarefas = [];
+        public IReadOnlyCollection<Tarefa> Tarefas => _tarefas;
 
+        protected Projeto() { }
+    
         public Projeto(string nome, Usuario autor, bool marcadoComoFavorito = false)
         {
             Nome = nome;
             Autor = autor;
-            Status =  new StatusProjeto(marcadoComoFavorito, true);
+            Status = new StatusProjeto(marcadoComoFavorito, true);
         }
-      
-        public int Id { get; private set; }
-        public Usuario? Autor { get; private set; } 
-        public string? Nome { get; private set; } 
-        public StatusProjeto? Status { get; private set; }
-
-        private readonly List<Tarefa> _tarefas = [];
-        public IReadOnlyCollection<Tarefa> Tarefas => _tarefas;
 
         public Tarefa AdicionarTarefa(string nome, int prioridadeId, int autorId, DateTime? dataFinal, string descricao, int? responsavelId = null)
         {

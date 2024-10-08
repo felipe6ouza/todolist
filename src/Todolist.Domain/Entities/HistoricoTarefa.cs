@@ -8,11 +8,14 @@ namespace Todolist.Domain.Entities
         public int TarefaId { get; private set; }
         public int UsuarioId { get; private set; }
 
-        public string Modificacoes { get; private set; }  
+        public string? Modificacoes { get; private set; }  
         public DateTime DataModificacao { get; private set; }
 
-        public virtual Tarefa Tarefa { get; private set; }
-        public virtual Usuario Usuario { get; private set; }
+        public virtual Tarefa? Tarefa { get; private set; }
+        public virtual Usuario? Usuario { get; private set; }
+
+        protected HistoricoTarefa() { }
+
         public HistoricoTarefa(int tarefaId, string modificacoes, DateTime dataModificacao, int usuarioId)
         {
             TarefaId = tarefaId;
@@ -21,7 +24,6 @@ namespace Todolist.Domain.Entities
             UsuarioId = usuarioId;
         }
 
-        protected HistoricoTarefa() { }
         
     }
 

@@ -8,27 +8,24 @@ namespace Todolist.Infrastructure.Data.DatabaseMappings
     {
         public void Configure(EntityTypeBuilder<Usuario> builder)
         {
-            // Nome da tabela
             builder.ToTable("Usuarios");
 
-            // Chave primária
             builder.HasKey(u => u.Id);
 
-            // Propriedades
             builder.Property(u => u.Id)
-                .ValueGeneratedOnAdd(); // ID gerado automaticamente
+                .ValueGeneratedOnAdd();
 
             builder.Property(u => u.Nome)
                 .IsRequired()
-                .HasMaxLength(100); // Limite de 100 caracteres para o nome
+                .HasMaxLength(100);
 
             builder.Property(u => u.Sobrenome)
                 .IsRequired()
-                .HasMaxLength(150); // Limite de 150 caracteres para o sobrenome
+                .HasMaxLength(150); 
 
             builder.Property(u => u.DataNascimento)
                 .IsRequired()
-                .HasColumnType("datetime"); // Define o tipo da coluna como datetime
+                .HasColumnType("datetime"); 
         }
     }
 }

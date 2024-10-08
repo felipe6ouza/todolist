@@ -21,9 +21,7 @@ namespace Todolist.Infrastructure.Data.DatabaseMappings
                 new { Id = (int)StatusTarefaEnum.Pendente, Descricao = StatusTarefaEnum.Pendente.ToString() },
                 new { Id = (int)StatusTarefaEnum.Concluida, Descricao = StatusTarefaEnum.Concluida.ToString() },
                 new { Id = (int)StatusTarefaEnum.Arquivada, Descricao = StatusTarefaEnum.Cancelada.ToString() },
-                new { Id = (int)StatusTarefaEnum.Cancelada, Descricao = StatusTarefaEnum.Arquivada.ToString() }
-
-        );
+                new { Id = (int)StatusTarefaEnum.Cancelada, Descricao = StatusTarefaEnum.Arquivada.ToString() });
         }
     }
 }

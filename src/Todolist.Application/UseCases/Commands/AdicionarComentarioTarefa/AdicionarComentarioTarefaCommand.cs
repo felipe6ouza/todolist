@@ -10,6 +10,6 @@ namespace Todolist.Application.UseCases.Commands.AdicionarComentarioTarefa
         [JsonIgnore]
         public int TarefaId { get; set; }
         public int AutorId { get; set; }
-        public string Descricao { get; set; }
+        public required string Descricao { get; set; }
     }
 }

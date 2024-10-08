@@ -10,7 +10,7 @@ namespace Todolist.Infrastructure.Data.DatabaseMappings
     {
         public void Configure(EntityTypeBuilder<FuncaoUsuario> builder)
         {
-            builder.ToTable("FuncaoUsuario");
+            builder.ToTable("FuncaoUsuarios");
 
             builder.HasKey(u => u.Id);
 
@@ -22,6 +22,7 @@ namespace Todolist.Infrastructure.Data.DatabaseMappings
              .WithOne(u => u.FuncaoUsuario)
              .HasForeignKey(u => u.FuncaoUsuarioId)
              .OnDelete(DeleteBehavior.Restrict);
+            
             builder.HasData(
                     new { Id = (int)FuncaoUsuarioEnum.Colaborador, Descricao = FuncaoUsuarioEnum.Colaborador.ToString() },
                     new { Id = (int)FuncaoUsuarioEnum.Gerente, Descricao = FuncaoUsuarioEnum.Gerente.ToString() });

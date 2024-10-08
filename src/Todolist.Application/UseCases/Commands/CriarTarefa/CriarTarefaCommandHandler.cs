@@ -18,7 +18,7 @@ namespace Todolist.Application.UseCases.Commands.CriarTarefa
             if (projeto == null)
                 return Result.Fail<int>("O Projeto não existe");
 
-            var tarefa = projeto.AdicionarTarefa(request.Nome, request.PrioridadeId, request.AutorId, request.DataFinal, request.Descricao, request.ResponsavelId);
+            var tarefa = projeto.AdicionarTarefa(request.Nome, request.PrioridadeId, request.AutorId, request.DataFinal, request.Descricao!, request.ResponsavelId);
 
             _tarefaRepository.Criar(tarefa);
             _projetoRepository.Atualizar(projeto);

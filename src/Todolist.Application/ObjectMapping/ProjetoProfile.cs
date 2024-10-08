@@ -9,8 +9,8 @@ namespace Todolist.Application.ObjectMapping
         public ProjetoProfile()
         {
             CreateMap<Projeto, ProjetoViewModel>()
-                .ForMember(dest => dest.Favorito, opt => opt.MapFrom(src => src.Status.Favorito))
-                .ForMember(dest => dest.Ativo, opt => opt.MapFrom(src => src.Status.Ativo));
+                .ForMember(dest => dest.Favorito, opt => opt.MapFrom(src => src.Status!.Favorito))
+                .ForMember(dest => dest.Ativo, opt => opt.MapFrom(src => src.Status!.Ativo));
         }
     }
 

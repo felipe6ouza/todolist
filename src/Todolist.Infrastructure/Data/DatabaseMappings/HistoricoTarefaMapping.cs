@@ -19,7 +19,7 @@ namespace Todolist.Infrastructure.Data.DatabaseMappings
              .OnDelete(DeleteBehavior.Cascade);
 
             builder.Property(ht => ht.Modificacoes)
-                      .HasColumnType("nvarchar(max)")
+                      .HasColumnType("nvarchar(max)") //SQL Server não tem um campo destinado a JSON.
                       .IsRequired();
 
             builder.HasOne(ht => ht.Usuario)

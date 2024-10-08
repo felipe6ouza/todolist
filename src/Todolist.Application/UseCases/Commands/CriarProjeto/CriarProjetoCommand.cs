@@ -6,8 +6,7 @@ namespace Todolist.Application.UseCases.Commands.CriarProjeto
     public class CriarProjetoCommand : IRequest<IResult<int>>
     {
         public int AutorId { get; set; }
-        public string Nome { get; set; }
-        public string CorHexadecimal { get; set; }
+        public required string Nome { get; set; }
         public bool Favorito { get; set; }
 
     }
