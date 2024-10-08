@@ -5,6 +5,7 @@ using Todolist.Application.UseCases.Commands.AtualizarTarefa;
 using Todolist.Application.UseCases.Commands.CriarTarefa;
 using Todolist.Application.UseCases.Commands.DeletarTarefa;
 using Todolist.Application.UseCases.Queries.ObterDetalhesTarefa;
+using Todolist.Application.ViewModel;
 using Todolist.WebAPI.Extensions;
 
 namespace Todolist.WebAPI.Controllers
@@ -16,6 +17,8 @@ namespace Todolist.WebAPI.Controllers
 
 
         [HttpGet("{tarefaId}")]
+        [ProducesResponseType<DetalhesTarefaViewModel>(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> ObterDetalhesTarefa(int tarefaId)
         {
             var result = await _mediator.Send(new ObterDetalhesTarefaQuery { TarefaId = tarefaId });
@@ -29,6 +32,8 @@ namespace Todolist.WebAPI.Controllers
 
 
         [HttpPost]
+        [ProducesResponseType<int>(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> AdicionarTarefa([FromBody] CriarTarefaCommand command)
         {
 
@@ -44,6 +49,8 @@ namespace Todolist.WebAPI.Controllers
 
 
         [HttpPost("{tarefaId}/comentario")]
+        [ProducesResponseType<int>(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> AdicionarComentarioTarefa(int tarefaId, [FromBody] AdicionarComentarioTarefaCommand command)
         {
             command.TarefaId = tarefaId;
@@ -61,6 +68,8 @@ namespace Todolist.WebAPI.Controllers
 
 
         [HttpPut("{tarefaId}")]
+        [ProducesResponseType<int>(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> AtualizarTarefa(int tarefaId, [FromBody] AtualizarTarefaCommand command)
         {
             command.TarefaId = tarefaId;
@@ -77,6 +86,8 @@ namespace Todolist.WebAPI.Controllers
 
 
         [HttpDelete("{tarefaId}")]
+        [ProducesResponseType<int>(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> RemoverTarefa(int tarefaId)
         {
             var result = await _mediator.Send(new DeletarTarefaCommand { TarefaId = tarefaId });

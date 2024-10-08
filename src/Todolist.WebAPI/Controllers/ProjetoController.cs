@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Todolist.Application.UseCases.Commands.CriarProjeto;
 using Todolist.Application.UseCases.Commands.DeletarProjeto;
 using Todolist.Application.UseCases.Queries.ListarTarefasProjeto;
+using Todolist.Application.ViewModel;
 using Todolist.WebAPI.Extensions;
 
 namespace Todolist.WebAPI.Controllers
@@ -13,6 +14,8 @@ namespace Todolist.WebAPI.Controllers
         public readonly IMediator _mediator = mediator;
 
         [HttpPost]
+        [ProducesResponseType<int>(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> CriarProjeto([FromBody] CriarProjetoCommand command)
         {
             var result = await _mediator.Send(command);
@@ -26,6 +29,9 @@ namespace Todolist.WebAPI.Controllers
         }
 
         [HttpGet("{projetoId}/tarefas")]
+        [ProducesResponseType<IEnumerable<ResumoTarefaViewModel>>(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> ObterTarefasPorProjeto(int projetoId)
         {
             var result = await _mediator.Send(new ListarTarefasProjetoQuery { ProjetoId = projetoId});
@@ -42,6 +48,8 @@ namespace Todolist.WebAPI.Controllers
         }
 
         [HttpDelete("{projetoId}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> DeletarProjeto(int projetoId)
         {
             var command = new DeletarProjetoCommand { ProjetoId = projetoId };

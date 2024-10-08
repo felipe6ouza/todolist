@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using Todolist.Application.UseCases.Queries.ListarProjetosUsuario;
 using Todolist.Application.UseCases.Queries.ListarUsuarios;
 using Todolist.Application.UseCases.Queries.ObterRelatorioDesempenho;
+using Todolist.Application.ViewModel;
+using Todolist.Domain.View;
 
 namespace Todolist.WebAPI.Controllers
 {
@@ -12,6 +14,8 @@ namespace Todolist.WebAPI.Controllers
         public readonly IMediator _mediator = mediator;
 
         [HttpGet("todos")]
+        [ProducesResponseType<IEnumerable<UsuarioViewModel>>(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> ObterUsuarios()
         {
             var relatorioUsuarios = await _mediator.Send(new ListarUsuariosQuery());
@@ -25,6 +29,8 @@ namespace Todolist.WebAPI.Controllers
 
 
         [HttpGet("{usuarioId}/projetos")]
+        [ProducesResponseType<IEnumerable<ProjetoViewModel>>(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> ListarProjetosUsuario(int usuarioId)
         {
             var projetos = await _mediator.Send(new ListarProjetosUsuarioQuery { UsuarioId = usuarioId});
@@ -38,6 +44,9 @@ namespace Todolist.WebAPI.Controllers
 
 
         [HttpGet("{usuarioId}/relatorio-desempenho")]
+        [ProducesResponseType<IEnumerable<RelatorioTarefasConcluidasView>>(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> ObterRelatorioDesempenho(int usuarioId)
         {
             var relatorioDesempenho = await _mediator.Send(new ObterRelatorioDesempenhoQuery { UsuarioId = usuarioId });
