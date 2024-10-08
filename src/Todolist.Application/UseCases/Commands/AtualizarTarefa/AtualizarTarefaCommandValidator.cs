@@ -11,11 +11,6 @@ namespace Todolist.Application.UseCases.Commands.CriarProjeto
             RuleFor(c => c.TarefaId)
              .GreaterThan(0)
              .WithMessage("Campo {PropertyName} deve ser maior que zero. Valor atual: '{PropertyValue}'");
-           
-            RuleFor(c => c.PrioridadeId)
-             .Must(BeAValidPriority)
-             .WithMessage("Campo {PropertyName} deve ser uma prioridade válida. Valor atual: '{PropertyValue}'")
-             .When(c => c.PrioridadeId.HasValue);
 
             RuleFor(c => c.Nome)
                .MaximumLength(280)
@@ -37,11 +32,6 @@ namespace Todolist.Application.UseCases.Commands.CriarProjeto
                  .When(c => c.ResponsavelId.HasValue)
                 .WithMessage("Campo {PropertyName} deve ser maior que zero. Valor atual: '{PropertyValue}'");
 
-        }
-
-        private bool BeAValidPriority(int? prioridadeId)
-        {
-            return Enum.IsDefined(typeof(TipoPrioridadeEnum), prioridadeId!);
         }
 
     }

@@ -3,9 +3,11 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable IDE0079 // Remove unnecessary suppression
 #pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
 
 namespace Todolist.Infrastructure.Data.Migrations
+#pragma warning restore IDE0079 // Remove unnecessary suppression
 {
     /// <inheritdoc />
     public partial class InitialCreate : Migration
@@ -202,6 +204,7 @@ namespace Todolist.Infrastructure.Data.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
+#pragma warning disable CA1861 // Avoid constant arrays as arguments
             migrationBuilder.InsertData(
                 table: "FuncaoUsuarios",
                 columns: new[] { "Id", "Descricao" },
@@ -210,7 +213,9 @@ namespace Todolist.Infrastructure.Data.Migrations
                     { 1, "Colaborador" },
                     { 2, "Gerente" }
                 });
+#pragma warning restore CA1861 // Avoid constant arrays as arguments
 
+#pragma warning disable CA1861 // Avoid constant arrays as arguments
             migrationBuilder.InsertData(
                 table: "StatusTarefa",
                 columns: new[] { "Id", "Descricao" },
@@ -221,7 +226,9 @@ namespace Todolist.Infrastructure.Data.Migrations
                     { 2, "Cancelada" },
                     { 3, "Arquivada" }
                 });
+#pragma warning restore CA1861 // Avoid constant arrays as arguments
 
+#pragma warning disable CA1861 // Avoid constant arrays as arguments
             migrationBuilder.InsertData(
                 table: "TiposPrioridade",
                 columns: new[] { "PrioridadeId", "Descricao" },
@@ -231,7 +238,9 @@ namespace Todolist.Infrastructure.Data.Migrations
                     { 2, "Media" },
                     { 3, "Baixa" }
                 });
+#pragma warning restore CA1861 // Avoid constant arrays as arguments
 
+#pragma warning disable CA1861 // Avoid constant arrays as arguments
             migrationBuilder.InsertData(
                 table: "Usuarios",
                 columns: new[] { "Id", "DataNascimento", "FuncaoUsuarioId", "Nome", "Sobrenome" },
@@ -240,6 +249,7 @@ namespace Todolist.Infrastructure.Data.Migrations
                     { 1, new DateTime(1998, 10, 8, 2, 2, 48, 67, DateTimeKind.Local).AddTicks(6966), 1, "Felipe", "Souza" },
                     { 2, new DateTime(1970, 10, 8, 2, 2, 48, 67, DateTimeKind.Local).AddTicks(6995), 2, "Linus", "Towards" }
                 });
+#pragma warning restore CA1861 // Avoid constant arrays as arguments
 
             migrationBuilder.CreateIndex(
                 name: "IX_Comentarios_AutorId",

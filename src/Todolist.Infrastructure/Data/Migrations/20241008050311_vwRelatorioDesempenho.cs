@@ -5,7 +5,9 @@
 namespace Todolist.Infrastructure.Data.Migrations
 {
     /// <inheritdoc />
+#pragma warning disable IDE1006 // Naming Styles
     public partial class vwRelatorioDesempenho : Migration
+#pragma warning restore IDE1006 // Naming Styles
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

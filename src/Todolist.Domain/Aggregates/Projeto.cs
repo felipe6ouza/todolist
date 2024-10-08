@@ -15,7 +15,7 @@ namespace Todolist.Domain.Aggregates
         private readonly List<Tarefa> _tarefas = [];
         public IReadOnlyCollection<Tarefa> Tarefas => _tarefas;
 
-        protected Projeto() { }
+        public Projeto() { }
     
         public Projeto(string nome, Usuario autor, bool marcadoComoFavorito = false)
         {
