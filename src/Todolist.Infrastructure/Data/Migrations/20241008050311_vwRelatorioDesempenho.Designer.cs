@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Todolist.Infrastructure.Data.Context;
 
@@ -11,9 +12,11 @@ using Todolist.Infrastructure.Data.Context;
 namespace Todolist.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(TodolistDbContext))]
-    partial class TodolistDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241008050311_vwRelatorioDesempenho")]
+    partial class vwRelatorioDesempenho
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

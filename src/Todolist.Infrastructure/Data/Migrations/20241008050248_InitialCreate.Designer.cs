@@ -12,7 +12,7 @@ using Todolist.Infrastructure.Data.Context;
 namespace Todolist.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(TodolistDbContext))]
-    [Migration("20241008042232_InitialCreate")]
+    [Migration("20241008050248_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -131,7 +131,7 @@ namespace Todolist.Infrastructure.Data.Migrations
                         new
                         {
                             Id = 1,
-                            DataNascimento = new DateTime(1998, 10, 8, 1, 22, 31, 726, DateTimeKind.Local).AddTicks(184),
+                            DataNascimento = new DateTime(1998, 10, 8, 2, 2, 48, 67, DateTimeKind.Local).AddTicks(6966),
                             FuncaoUsuarioId = 1,
                             Nome = "Felipe",
                             Sobrenome = "Souza"
@@ -139,7 +139,7 @@ namespace Todolist.Infrastructure.Data.Migrations
                         new
                         {
                             Id = 2,
-                            DataNascimento = new DateTime(1970, 10, 8, 1, 22, 31, 726, DateTimeKind.Local).AddTicks(203),
+                            DataNascimento = new DateTime(1970, 10, 8, 2, 2, 48, 67, DateTimeKind.Local).AddTicks(6995),
                             FuncaoUsuarioId = 2,
                             Nome = "Linus",
                             Sobrenome = "Towards"

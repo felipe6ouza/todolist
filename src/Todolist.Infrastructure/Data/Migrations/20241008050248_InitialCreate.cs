@@ -237,8 +237,8 @@ namespace Todolist.Infrastructure.Data.Migrations
                 columns: new[] { "Id", "DataNascimento", "FuncaoUsuarioId", "Nome", "Sobrenome" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(1998, 10, 8, 1, 22, 31, 726, DateTimeKind.Local).AddTicks(184), 1, "Felipe", "Souza" },
-                    { 2, new DateTime(1970, 10, 8, 1, 22, 31, 726, DateTimeKind.Local).AddTicks(203), 2, "Linus", "Towards" }
+                    { 1, new DateTime(1998, 10, 8, 2, 2, 48, 67, DateTimeKind.Local).AddTicks(6966), 1, "Felipe", "Souza" },
+                    { 2, new DateTime(1970, 10, 8, 2, 2, 48, 67, DateTimeKind.Local).AddTicks(6995), 2, "Linus", "Towards" }
                 });
 
             migrationBuilder.CreateIndex(
