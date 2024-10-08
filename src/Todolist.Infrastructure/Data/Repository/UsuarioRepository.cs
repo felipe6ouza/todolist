@@ -21,7 +21,7 @@ namespace Todolist.Infrastructure.Data.Repository
 
         public async Task<IEnumerable<Usuario>> ObterTodos()
         {
-            return await DbSet.ToListAsync();
+            return await DbSet.Include(c=> c.FuncaoUsuario).ToListAsync();
         }
         public async Task<Usuario?> ObterPorId(int id)
         {

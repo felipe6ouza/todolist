@@ -20,7 +20,10 @@ namespace Todolist.Application.UseCases.Queries.ListarUsuarios
             var usuariosViewModel = usuarios.Select(u => new UsuarioViewModel
             {
                 Id = u.Id,
-                Nome = u.Nome!
+                Nome = u.Nome!,
+                FuncaoUsuarioId = u.FuncaoUsuarioId,
+                DescricaoFuncaoUsuario = u.FuncaoUsuario?.Descricao!
+                
             }).ToList();
 
             return Result.Ok(usuariosViewModel);
