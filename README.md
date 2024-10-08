@@ -63,10 +63,11 @@ Na terceira fase, alguns pontos de melhoria e sugestões que eu implementaria no
 
 3.  **Monitoramente e Logging**:
    - Implementar ferramentas de monitoramento (como Prometheus, Grafana) e centralização de logs (como ELK) para facilitar o diagnóstico e monitoramento da aplicação em produção.
-4. **Autorização de Relatório**
- A verificação de permissões para acessar os relatórios seria baseada em Roles/Claims, extraídas a partir do token da requisição e aplicadas durante o processo de autenticação e autorização no endpoint.
 
-5. **Mais Testes**
-- Implementaria **Testes de Carga** para medir a capacidade de throughput da aplicação, garantindo que ela possa lidar com um grande volume de requets.
-- Aumentaria a cobertura de testes de unidade para todos os casos de uso, com foco tanto em testes de entidades quanto de handlers. (Reconheço que poderia ter entregue uma maior cobertura até aqui. Nos testes que existentes, minha intenção foi demonstrar como abordaria a implementação de testes para os dois cenários distintos).
+4. **Autorização de Relatório**:
+   - A verificação de permissões para acessar os relatórios seria baseada em Roles/Claims, extraídas a partir do token da requisição e aplicadas durante o processo de autenticação e autorização no endpoint.
+
+5. **Mais Testes**:
+   - Implementaria **Testes de Carga** para medir a capacidade de throughput da aplicação, garantindo que ela possa lidar com um grande volume de requets.
+   - Aumentaria a cobertura de testes de unidade para todos os casos de uso, com foco tanto em testes de entidades quanto de handlers. (Reconheço que poderia ter entregue uma maior cobertura até aqui. Nos testes que existentes, minha intenção foi demonstrar como abordaria a implementação de testes para os dois cenários distintos).
 
